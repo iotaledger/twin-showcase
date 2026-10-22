@@ -1,0 +1,812 @@
+{
+  "corridor": {
+    "id": "vietnam-eu",
+    "name": "Vietnam-EU Export Corridor",
+    "description": "Vietnam garment and footwear exports to EU markets under EVFTA preferential tariff",
+    "version": "1.0.0"
+  },
+  "branding": {
+    "appName": "TWIN Vietnam-EU",
+    "tagline": "Trade & Logistics Platform",
+    "logo": "/vietnam.png",
+    "alpha": {
+      "label": "Alpha",
+      "description": "Vietnam Export Corridor"
+    },
+    "beta": {
+      "label": "Beta",
+      "description": "EU Destination Markets"
+    }
+  },
+  "theme": {
+    "accent": "#DA251D",
+    "accentLight": "#fce8e7",
+    "navBg": "#DA251D",
+    "navHover": "#fce8e7",
+    "navActive": "#DA251D",
+    "amber": "#FFD700"
+  },
+  "nodes": {
+    "alpha": {
+      "orgs": [
+        {
+          "id": "org1",
+          "name": "Lotus Bay Apparel JSC",
+          "role": "Manufacturer - Vietnam",
+          "username": "lotusbay",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org2",
+          "name": "Export Customs Office (Vietnam)",
+          "role": "Customs Authority - Vietnam",
+          "username": "vncustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Export Customs Office (Vietnam)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org3",
+          "name": "Certificate of Origin Office (Vietnam)",
+          "role": "Certificate of Origin Authority - Vietnam",
+          "username": "vncoo",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Trade Ministry (Vietnam)",
+          "governmentSystem": "National eCO system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org4",
+          "name": "Hanbit Fibers Co., Ltd",
+          "role": "Input Supplier - South Korea",
+          "username": "hanbit",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org7",
+          "name": "Mekong Commercial Bank",
+          "role": "Financier - Vietnam",
+          "username": "financier1",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org8",
+          "name": "Seine Commerce Bank Vietnam",
+          "role": "Financier - International",
+          "username": "financier2",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org9",
+          "name": "Clearview Inspection Services Vietnam",
+          "role": "Quality Inspector - Vietnam",
+          "username": "clearview",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org10",
+          "name": "Port Authority (Ho Chi Minh City)",
+          "role": "Port Authority - Ho Chi Minh City",
+          "username": "hcmcport",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Maritime Administration (Vietnam)",
+          "governmentSystem": "Port community system",
+          "digitalSignatureCapability": false
+        },
+        {
+          "id": "org11",
+          "name": "Jadeway Logistics",
+          "role": "Freight Forwarder - Vietnam",
+          "username": "jadeway",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org12",
+          "name": "Corsair Shipping Vietnam",
+          "role": "Carrier - Vietnam",
+          "username": "corsair",
+          "password": "demo",
+          "orgType": "private"
+        }
+      ]
+    },
+    "beta": {
+      "orgs": [
+        {
+          "id": "org5",
+          "name": "Northpeak Athletics Europe B.V.",
+          "role": "Importing Buyer - Netherlands",
+          "username": "northpeakeu",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org6",
+          "name": "Alpine Sports Retail SE",
+          "role": "Importing Buyer - France",
+          "username": "alpinesports",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org13",
+          "name": "EU Import Customs Office (Netherlands)",
+          "role": "Customs Authority - Netherlands",
+          "username": "eucustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "EU Import Customs Office (Netherlands)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org14",
+          "name": "Import Customs Office (France)",
+          "role": "Customs Authority - France",
+          "username": "frcustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Import Customs Office (France)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        }
+      ]
+    }
+  },
+  "credentials": {
+    "blacklisted": [
+      "MST-000000",
+      "BRN-000000",
+      "TIN-000000"
+    ],
+    "expired": [
+      "MST-111111"
+    ],
+    "suspended": [
+      "MST-222222"
+    ],
+    "registrationTypes": {
+      "MST": "Vietnam Tax Code (Ma So Thue)",
+      "BRN": "Business Registration Number",
+      "KBN": "Korean Business Number",
+      "EORI": "EU Economic Operator ID",
+      "SIRET": "French SIRET Number",
+      "KVK": "Dutch company registration number",
+      "TIN": "Tax Identification Number",
+      "LEI": "Legal Entity Identifier"
+    },
+    "attestationAuthorities": [
+      {
+        "roleMatch": "Vietnam",
+        "authority": "Export Customs Office (Vietnam)"
+      },
+      {
+        "roleMatch": "South Korea",
+        "authority": "Customs Office (South Korea)"
+      },
+      {
+        "roleMatch": "Netherlands",
+        "authority": "EU Import Customs Office (Netherlands)"
+      },
+      {
+        "roleMatch": "France",
+        "authority": "Import Customs Office (France)"
+      }
+    ],
+    "defaultAuthority": "National Business Registry",
+    "testCredentials": {
+      "pass": [
+        {
+          "code": "MST-123456",
+          "description": "Vietnam Tax Code (Ma So Thue)"
+        },
+        {
+          "code": "KBN-254789",
+          "description": "Korean Business Number"
+        },
+        {
+          "code": "EORI-345678",
+          "description": "EU Economic Operator ID"
+        },
+        {
+          "code": "SIRET-12345",
+          "description": "French SIRET Number"
+        }
+      ],
+      "fail": [
+        {
+          "code": "MST-000000",
+          "description": "Denied - blacklisted"
+        },
+        {
+          "code": "MST-111111",
+          "description": "Expired licence"
+        },
+        {
+          "code": "MST-222222",
+          "description": "Suspended - under review"
+        },
+        {
+          "code": "X-anything",
+          "description": "Invalid prefix"
+        }
+      ]
+    }
+  },
+  "consignments": {
+    "alpha": [
+      {
+        "ucr": "VN-2026-EXP-00301",
+        "product": "Men's Synthetic Windbreaker Jackets (Woven)",
+        "hsCode": "6201.93",
+        "quantity": "15,000 pcs",
+        "totalValue": 330000,
+        "currency": "EUR",
+        "exporter": "Lotus Bay Apparel JSC",
+        "importer": "Northpeak Athletics Europe B.V.",
+        "fromCountry": "Vietnam",
+        "toCountry": "Netherlands",
+        "originPort": "Port of Ho Chi Minh City",
+        "destinationPort": "Port of Rotterdam",
+        "vessel": "MV Corsair Mekong",
+        "shipDate": "2026-03-10",
+        "incoterms": "CIF",
+        "invoiceRef": "INV-2026-LBA-0301",
+        "declRef": "VN-EXP-2026-0301",
+        "status": "Delivered",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Lotus Bay Apparel JSC",
+        "originComposition": {
+          "localContentPercent": 62.0,
+          "calculationMethod": "RVC",
+          "threshold": 40,
+          "cptppCumulationApplied": false,
+          "inputMaterials": [
+            {
+              "material": "Nylon Fabric",
+              "supplierCountry": "KR",
+              "valuePercent": 32.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Lining",
+              "supplierCountry": "VN",
+              "valuePercent": 10.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Zippers",
+              "supplierCountry": "VN",
+              "valuePercent": 8.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "VN",
+              "valuePercent": 44.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Elastic",
+              "supplierCountry": "CN",
+              "valuePercent": 6.0,
+              "ftaMember": false
+            }
+          ]
+        }
+      },
+      {
+        "ucr": "VN-2026-EXP-00302",
+        "product": "Women's Knitted Sports Trousers",
+        "hsCode": "6104.63",
+        "quantity": "22,000 pcs",
+        "totalValue": 242000,
+        "currency": "EUR",
+        "exporter": "Lotus Bay Apparel JSC",
+        "importer": "Northpeak Athletics Europe B.V.",
+        "fromCountry": "Vietnam",
+        "toCountry": "Netherlands",
+        "originPort": "Port of Ho Chi Minh City",
+        "destinationPort": "Port of Rotterdam",
+        "vessel": "MV Corsair Marco Polo",
+        "shipDate": "2026-03-20",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-LBA-0302",
+        "declRef": "VN-EXP-2026-0302",
+        "status": "In Transit",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Lotus Bay Apparel JSC",
+        "originComposition": {
+          "localContentPercent": 70.0,
+          "calculationMethod": "RVC",
+          "threshold": 40,
+          "cptppCumulationApplied": false,
+          "inputMaterials": [
+            {
+              "material": "Knitted Fabric",
+              "supplierCountry": "VN",
+              "valuePercent": 25.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Elastic Waistband",
+              "supplierCountry": "KR",
+              "valuePercent": 8.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "VN",
+              "valuePercent": 12.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "VN",
+              "valuePercent": 48.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Dye",
+              "supplierCountry": "CN",
+              "valuePercent": 7.0,
+              "ftaMember": false
+            }
+          ]
+        }
+      },
+      {
+        "ucr": "VN-2026-EXP-E301",
+        "product": "Knitted Fleece Hooded Sweatshirts",
+        "hsCode": "6110.30",
+        "quantity": "18,000 pcs",
+        "totalValue": 306000,
+        "currency": "EUR",
+        "exporter": "Lotus Bay Apparel JSC",
+        "importer": "Alpine Sports Retail SE",
+        "fromCountry": "Vietnam",
+        "toCountry": "France",
+        "originPort": "Port of Ho Chi Minh City",
+        "destinationPort": "Port of Le Havre",
+        "vessel": "MV Corsair Marco Polo",
+        "shipDate": "2026-02-25",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-LBA-E301",
+        "declRef": "VN-EXP-2026-E301",
+        "status": "Under Review",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Lotus Bay Apparel JSC",
+        "errorType": "Origin Verification Failed",
+        "errorDescription": "Origin composition shows 36% Vietnamese value-added content (below 40% EVFTA threshold). Fleece fabric from non-EVFTA supplier (China, 48%). EU customs at Le Havre has requested additional documentation to verify EVFTA eligibility.",
+        "originComposition": {
+          "localContentPercent": 36.0,
+          "calculationMethod": "RVC",
+          "threshold": 40,
+          "cptppCumulationApplied": false,
+          "inputMaterials": [
+            {
+              "material": "Fleece Fabric",
+              "supplierCountry": "CN",
+              "valuePercent": 48.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "VN",
+              "valuePercent": 4.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Zippers",
+              "supplierCountry": "CN",
+              "valuePercent": 8.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "VN",
+              "valuePercent": 36.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Drawcord",
+              "supplierCountry": "CN",
+              "valuePercent": 4.0,
+              "ftaMember": false
+            }
+          ]
+        }
+      }
+    ],
+    "beta": [
+      {
+        "ucr": "KR-2026-EXP-00401",
+        "product": "Spandex Yarn (40D/70D)",
+        "hsCode": "5402.44",
+        "quantity": "40,000 kg",
+        "totalValue": 120000,
+        "currency": "USD",
+        "exporter": "Hanbit Fibers Co., Ltd",
+        "importer": "Lotus Bay Apparel JSC",
+        "fromCountry": "South Korea",
+        "toCountry": "Vietnam",
+        "originPort": "Port of Busan",
+        "destinationPort": "Port of Ho Chi Minh City",
+        "vessel": "MV Hanbada Promise",
+        "shipDate": "2026-01-18",
+        "incoterms": "CIF",
+        "invoiceRef": "INV-2026-HBF-0401",
+        "declRef": "KR-EXP-2026-0401",
+        "status": "Delivered",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "Northpeak Athletics Europe B.V."
+      },
+      {
+        "ucr": "KR-2026-EXP-00402",
+        "product": "Nylon Woven Fabric (Ripstop, Dyed)",
+        "hsCode": "5407.42",
+        "quantity": "28,000 kg",
+        "totalValue": 168000,
+        "currency": "USD",
+        "exporter": "Hanbit Fibers Co., Ltd",
+        "importer": "Lotus Bay Apparel JSC",
+        "fromCountry": "South Korea",
+        "toCountry": "Vietnam",
+        "originPort": "Port of Busan",
+        "destinationPort": "Port of Hai Phong",
+        "vessel": "MV Hanbada Algeciras",
+        "shipDate": "2026-02-12",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-HBF-0402",
+        "declRef": "KR-EXP-2026-0402",
+        "status": "In Transit",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "Northpeak Athletics Europe B.V."
+      }
+    ]
+  },
+  "documents": {
+    "alpha": [
+      {
+        "name": "Export Certificate of Origin",
+        "docType": "Export Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Certificate of Origin Office (Vietnam)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Export Customs Office (Vietnam)",
+        "suffix": "ED"
+      },
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": null,
+        "issuerName": "Jadeway Logistics",
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Corsair Shipping Vietnam",
+        "suffix": "BL"
+      }
+    ],
+    "beta": [
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Hanbada Marine Co., Ltd",
+        "suffix": "BL"
+      },
+      {
+        "name": "Certificate of Origin",
+        "docType": "Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Customs Office (South Korea)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Customs Office (South Korea)",
+        "suffix": "ED"
+      }
+    ]
+  },
+  "documentTemplates": {
+    "addressBook": {
+      "Vietnam": "Lot 12, Lotus Bay Industrial Park, Thai Nguyen, Vietnam",
+      "South Korea": "88 Hanbit-ro, Mapo-gu, Seoul, South Korea",
+      "Netherlands": "Havenstraat 21, 3011 AB Rotterdam, Netherlands",
+      "France": "12 Rue des Alpes, 69002 Lyon, France"
+    },
+    "defaultCarrier": "Corsair Shipping",
+    "pdfTemplates": {
+      "Export Certificate of Origin": {
+        "lines": [
+          "CERTIFICATE OF ORIGIN (EUR.1)",
+          "EU-Vietnam Free Trade Agreement (EVFTA)",
+          "Certificate of Origin Office (Vietnam)",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Origin: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This certificate is issued under the EVFTA preferential",
+          "tariff arrangement between Vietnam and the European Union.",
+          "",
+          "Origin criterion: Regional Value Content (RVC >= 40%)",
+          "",
+          "Issued by: Certificate of Origin Office (Vietnam)"
+        ]
+      },
+      "Export Declaration": {
+        "lines": [
+          "EXPORT DECLARATION",
+          "National customs declaration system (Vietnam)",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Declarant: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Export: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This declaration has been filed through the national customs system.",
+          "",
+          "Issued by: Export Customs Office (Vietnam)"
+        ]
+      }
+    },
+    "xmlTemplates": {
+      "Bill of Material": {
+        "originComposition": {
+          "localContentPercent": 62.0,
+          "cptppCumulationApplied": false,
+          "thirdCountryContentPercent": 6.0,
+          "inputMaterials": [
+            {
+              "material": "Fabric",
+              "origin": "KR",
+              "percent": 32.0
+            },
+            {
+              "material": "Lining",
+              "origin": "VN",
+              "percent": 10.0
+            },
+            {
+              "material": "Zippers",
+              "origin": "VN",
+              "percent": 8.0
+            },
+            {
+              "material": "Labor",
+              "origin": "VN",
+              "percent": 44.0
+            },
+            {
+              "material": "Elastic",
+              "origin": "CN",
+              "percent": 6.0
+            }
+          ]
+        }
+      },
+      "Export Certificate of Origin": {
+        "formType": "EUR.1",
+        "issuingAuthority": "Certificate of Origin Office (Vietnam)",
+        "issuingSystem": "National eCO system",
+        "originCriterion": "RVC",
+        "cumulationPartnerCountry": null,
+        "cumulationMaterialType": null
+      },
+      "Export Declaration": {
+        "declarantName": "Export Customs Office (Vietnam)",
+        "customsSystem": "National customs declaration system"
+      }
+    }
+  },
+  "finance": {
+    "currencies": [
+      "EUR",
+      "USD",
+      "VND"
+    ],
+    "paymentMethods": [
+      "Bank Transfer",
+      "Letter of Credit",
+      "Open Account"
+    ],
+    "seedData": {
+      "payments": [
+        {
+          "consignmentUcr": "VN-2026-EXP-00301",
+          "invoiceRef": "INV-2026-LBA-0301",
+          "amount": 330000,
+          "currency": "EUR",
+          "dueDate": "2026-06-10",
+          "status": "Partially Paid",
+          "paidAmount": 165000,
+          "paymentMethod": "Letter of Credit",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "notes": "First instalment (50%) received via LC. Balance due on B/L presentation and EU customs clearance.",
+          "createdAt": "2026-03-10T09:00:00.000Z"
+        }
+      ],
+      "letterOfCredits": [
+        {
+          "consignmentUcr": "VN-2026-EXP-00301",
+          "lcNumber": "LC-2026-MEK-0301",
+          "issuingBank": "Seine Commerce Bank Vietnam",
+          "advisingBank": "Mekong Commercial Bank",
+          "beneficiary": "Lotus Bay Apparel JSC",
+          "applicant": "Northpeak Athletics Europe B.V.",
+          "amount": 330000,
+          "currency": "EUR",
+          "expiryDate": "2026-09-10",
+          "status": "Confirmed",
+          "creatorOrgId": "org1",
+          "createdAt": "2026-03-10T09:00:00.000Z"
+        }
+      ],
+      "smartContracts": [
+        {
+          "consignmentUcr": "VN-2026-EXP-00301",
+          "contractRef": "SC-2026-VN-0301",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "amount": 330000,
+          "currency": "EUR",
+          "status": "Active",
+          "autoRelease": true,
+          "createdAt": "2026-03-10T09:00:00.000Z",
+          "conditions": [
+            {
+              "description": "Export Certificate of Origin (EUR.1) issued and EVFTA-compliant",
+              "docType": "Export Certificate of Origin",
+              "met": true,
+              "metAt": "2026-03-13T08:00:00.000Z"
+            },
+            {
+              "description": "Origin composition verified (Vietnam content >= 40%)",
+              "docType": "Bill of Material",
+              "met": true,
+              "metAt": "2026-03-13T09:00:00.000Z"
+            },
+            {
+              "description": "Bill of Lading verified and presented",
+              "docType": "Bill of Lading",
+              "met": false,
+              "metAt": null
+            },
+            {
+              "description": "EU customs clearance at Rotterdam",
+              "docType": null,
+              "met": false,
+              "metAt": null
+            }
+          ]
+        }
+      ],
+      "financeViewers": {
+        "VN-2026-EXP-00301": [
+          "org7",
+          "org8"
+        ]
+      }
+    }
+  },
+  "geography": {
+    "countries": {
+      "Vietnam": {
+        "iso": "704",
+        "coords": [
+          108.2772,
+          14.0583
+        ],
+        "spread": 3.5
+      },
+      "South Korea": {
+        "iso": "410",
+        "coords": [
+          127.7669,
+          35.9078
+        ],
+        "spread": 2.0
+      },
+      "Netherlands": {
+        "iso": "528",
+        "coords": [
+          5.2913,
+          52.1326
+        ],
+        "spread": 1.5
+      },
+      "France": {
+        "iso": "250",
+        "coords": [
+          2.2137,
+          46.2276
+        ],
+        "spread": 3.5
+      },
+      "China": {
+        "iso": "156",
+        "coords": [
+          104.1954,
+          35.8617
+        ],
+        "spread": 12.0
+      }
+    },
+    "specialMappings": {
+      "Ho Chi Minh City": "Vietnam",
+      "International": null,
+      "EU": "Netherlands"
+    },
+    "trustScoreLabel": "Verified Vietnamese Exporter"
+  },
+  "regulations": [
+    {
+      "id": "evfta",
+      "name": "EU-Vietnam Free Trade Agreement",
+      "displayLabel": "EVFTA",
+      "applicableToDestinations": [
+        "Netherlands",
+        "France"
+      ],
+      "complianceFieldMapping": {
+        "Origin Content": "consignment.originComposition.localContentPercent",
+        "Certificate of Origin": "documents.Export Certificate of Origin",
+        "Calculation Method": "consignment.originComposition.calculationMethod"
+      }
+    }
+  ]
+}

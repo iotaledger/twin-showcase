@@ -1,0 +1,805 @@
+{
+  "corridor": {
+    "id": "cambodia-eu",
+    "name": "Cambodia Garment Export Corridor",
+    "description": "Cambodia garment and textile exports to EU markets under EBA/GSP+ preferential tariff",
+    "version": "1.0.0"
+  },
+  "branding": {
+    "appName": "TWIN Cambodia",
+    "tagline": "Trade & Logistics Platform",
+    "logo": "/cambodia.png",
+    "alpha": {
+      "label": "Alpha",
+      "description": "Cambodia Export Hub"
+    },
+    "beta": {
+      "label": "Beta",
+      "description": "EU Destination Markets"
+    }
+  },
+  "theme": {
+    "accent": "#032EA1",
+    "accentLight": "#e8ecf8",
+    "navBg": "#032EA1",
+    "navHover": "#e8ecf8",
+    "navActive": "#032EA1",
+    "amber": "#D4A017"
+  },
+  "nodes": {
+    "alpha": {
+      "orgs": [
+        {
+          "id": "org1",
+          "name": "Angkor Thread Garments Co., Ltd",
+          "role": "Manufacturer - Cambodia",
+          "username": "angkorthread",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org2",
+          "name": "Export Customs Office (Cambodia)",
+          "role": "Customs Authority - Cambodia",
+          "username": "khcustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Export Customs Office (Cambodia)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org3",
+          "name": "Certificate of Origin Office (Cambodia)",
+          "role": "Certificate of Origin Authority - Cambodia",
+          "username": "khcommerce",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Trade Ministry (Cambodia)",
+          "governmentSystem": "National eCO system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org4",
+          "name": "Silkway Textile Trading Co., Ltd",
+          "role": "Input Supplier - China",
+          "username": "textrade",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org7",
+          "name": "Tonle Commercial Bank Plc.",
+          "role": "Financier - Cambodia",
+          "username": "tonlebank",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org8",
+          "name": "Meridian Trade Bank Cambodia",
+          "role": "Financier - International",
+          "username": "meridianbank",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org9",
+          "name": "Clearview Inspection Services Cambodia",
+          "role": "Quality Inspector - Cambodia",
+          "username": "clearview",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org10",
+          "name": "Port Authority (Sihanoukville)",
+          "role": "Port Authority - Sihanoukville",
+          "username": "shvport",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Port Authority (Sihanoukville)",
+          "governmentSystem": "Port community system",
+          "digitalSignatureCapability": false
+        },
+        {
+          "id": "org11",
+          "name": "Jadeway Logistics Cambodia",
+          "role": "Freight Forwarder - Cambodia",
+          "username": "jadeway",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org12",
+          "name": "Corsair Shipping Cambodia",
+          "role": "Carrier - Cambodia",
+          "username": "corsair",
+          "password": "demo",
+          "orgType": "private"
+        }
+      ]
+    },
+    "beta": {
+      "orgs": [
+        {
+          "id": "org5",
+          "name": "Nordvik Fashion AB",
+          "role": "Importing Buyer - Sweden",
+          "username": "nordvik",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org6",
+          "name": "Thistle Street Retail Ltd",
+          "role": "Importing Buyer - United Kingdom",
+          "username": "thistle",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org13",
+          "name": "Import Customs Office (Sweden)",
+          "role": "Customs Authority - Sweden",
+          "username": "secustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Import Customs Office (Sweden)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org14",
+          "name": "EU Import Customs Office (Netherlands)",
+          "role": "Customs Authority - EU",
+          "username": "eucustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "EU Import Customs Office (Netherlands)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        }
+      ]
+    }
+  },
+  "credentials": {
+    "blacklisted": [
+      "TIN-000000",
+      "BRN-000000"
+    ],
+    "expired": [
+      "TIN-111111"
+    ],
+    "suspended": [
+      "TIN-222222"
+    ],
+    "registrationTypes": {
+      "TIN": "Cambodia Tax Identification Number",
+      "BRN": "Business Registration Number",
+      "EORI": "EU Economic Operator ID",
+      "ORG": "Swedish Organisationsnummer",
+      "LEI": "Legal Entity Identifier",
+      "DUNS": "DUNS Number"
+    },
+    "attestationAuthorities": [
+      {
+        "roleMatch": "Cambodia",
+        "authority": "Export Customs Office (Cambodia)"
+      },
+      {
+        "roleMatch": "China",
+        "authority": "Customs Office (China)"
+      },
+      {
+        "roleMatch": "Sweden",
+        "authority": "Import Customs Office (Sweden)"
+      },
+      {
+        "roleMatch": "EU",
+        "authority": "EU Import Customs Office"
+      },
+      {
+        "roleMatch": "United Kingdom",
+        "authority": "Customs Office (United Kingdom)"
+      }
+    ],
+    "defaultAuthority": "National Business Registry",
+    "testCredentials": {
+      "pass": [
+        {
+          "code": "TIN-123456",
+          "description": "Cambodia Tax Identification Number"
+        },
+        {
+          "code": "BRN-789012",
+          "description": "Business Registration Number"
+        },
+        {
+          "code": "EORI-345678",
+          "description": "EU Economic Operator ID"
+        },
+        {
+          "code": "ORG-556677",
+          "description": "Swedish Organisationsnummer"
+        }
+      ],
+      "fail": [
+        {
+          "code": "TIN-000000",
+          "description": "Denied - blacklisted"
+        },
+        {
+          "code": "TIN-111111",
+          "description": "Expired licence"
+        },
+        {
+          "code": "TIN-222222",
+          "description": "Suspended - under review"
+        },
+        {
+          "code": "X-anything",
+          "description": "Invalid prefix"
+        }
+      ]
+    }
+  },
+  "consignments": {
+    "alpha": [
+      {
+        "ucr": "KH-2026-EXP-00101",
+        "product": "Women's Cotton T-Shirts (Knitted)",
+        "hsCode": "6109.10",
+        "quantity": "50,000 pcs",
+        "totalValue": 175000,
+        "currency": "EUR",
+        "exporter": "Angkor Thread Garments Co., Ltd",
+        "importer": "Nordvik Fashion AB",
+        "fromCountry": "Cambodia",
+        "toCountry": "Sweden",
+        "originPort": "Port of Sihanoukville",
+        "destinationPort": "Port of Gothenburg",
+        "vessel": "MV Corsair Mekong",
+        "shipDate": "2026-03-05",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-ATG-0101",
+        "declRef": "KH-EXP-2026-0101",
+        "status": "Delivered",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Angkor Thread Garments Co., Ltd",
+        "originComposition": {
+          "localContentPercent": 52.0,
+          "calculationMethod": "RVC",
+          "threshold": 40,
+          "cptppCumulationApplied": false,
+          "inputMaterials": [
+            {
+              "material": "Cotton Fabric",
+              "supplierCountry": "CN",
+              "valuePercent": 35.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "KH",
+              "valuePercent": 8.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labels",
+              "supplierCountry": "CN",
+              "valuePercent": 5.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "KH",
+              "valuePercent": 44.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Packaging",
+              "supplierCountry": "KH",
+              "valuePercent": 8.0,
+              "ftaMember": true
+            }
+          ]
+        }
+      },
+      {
+        "ucr": "KH-2026-EXP-00102",
+        "product": "Men's Denim Jeans (Woven, Indigo)",
+        "hsCode": "6203.42",
+        "quantity": "30,000 pcs",
+        "totalValue": 270000,
+        "currency": "EUR",
+        "exporter": "Angkor Thread Garments Co., Ltd",
+        "importer": "Nordvik Fashion AB",
+        "fromCountry": "Cambodia",
+        "toCountry": "Sweden",
+        "originPort": "Port of Sihanoukville",
+        "destinationPort": "Port of Gothenburg",
+        "vessel": "MV Corsair Unity",
+        "shipDate": "2026-03-15",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-ATG-0102",
+        "declRef": "KH-EXP-2026-0102",
+        "status": "In Transit",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Angkor Thread Garments Co., Ltd",
+        "originComposition": {
+          "localContentPercent": 48.0,
+          "calculationMethod": "RVC",
+          "threshold": 40,
+          "cptppCumulationApplied": false,
+          "inputMaterials": [
+            {
+              "material": "Denim Fabric",
+              "supplierCountry": "CN",
+              "valuePercent": 38.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Zippers & Rivets",
+              "supplierCountry": "CN",
+              "valuePercent": 7.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Thread & Labels",
+              "supplierCountry": "KH",
+              "valuePercent": 5.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "KH",
+              "valuePercent": 43.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Washing & Finish",
+              "supplierCountry": "KH",
+              "valuePercent": 7.0,
+              "ftaMember": true
+            }
+          ]
+        }
+      },
+      {
+        "ucr": "KH-2026-EXP-E001",
+        "product": "Women's Silk Scarves (Woven)",
+        "hsCode": "6214.10",
+        "quantity": "10,000 pcs",
+        "totalValue": 95000,
+        "currency": "EUR",
+        "exporter": "Angkor Thread Garments Co., Ltd",
+        "importer": "Nordvik Fashion AB",
+        "fromCountry": "Cambodia",
+        "toCountry": "Sweden",
+        "originPort": "Port of Sihanoukville",
+        "destinationPort": "Port of Gothenburg",
+        "vessel": "MV Corsair Unity",
+        "shipDate": "2026-02-20",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-ATG-E001",
+        "declRef": "KH-EXP-2026-E001",
+        "status": "Under Review",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Angkor Thread Garments Co., Ltd",
+        "errorType": "Origin Verification Failed",
+        "errorDescription": "Origin composition shows 32% Cambodian value-added content (below 40% EBA threshold). Silk fabric sourced from non-LDC country (China, 55%). EU customs has requested additional documentation to verify EBA eligibility.",
+        "originComposition": {
+          "localContentPercent": 32.0,
+          "calculationMethod": "RVC",
+          "threshold": 40,
+          "cptppCumulationApplied": false,
+          "inputMaterials": [
+            {
+              "material": "Silk Fabric",
+              "supplierCountry": "CN",
+              "valuePercent": 55.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Dye & Finish",
+              "supplierCountry": "CN",
+              "valuePercent": 8.0,
+              "ftaMember": false
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "KH",
+              "valuePercent": 5.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "KH",
+              "valuePercent": 27.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Packaging",
+              "supplierCountry": "KH",
+              "valuePercent": 5.0,
+              "ftaMember": true
+            }
+          ]
+        }
+      }
+    ],
+    "beta": [
+      {
+        "ucr": "CN-2026-EXP-00201",
+        "product": "Cotton Knit Fabric (Jersey, 180 GSM)",
+        "hsCode": "6006.22",
+        "quantity": "60,000 kg",
+        "totalValue": 180000,
+        "currency": "USD",
+        "exporter": "Silkway Textile Trading Co., Ltd",
+        "importer": "Angkor Thread Garments Co., Ltd",
+        "fromCountry": "China",
+        "toCountry": "Cambodia",
+        "originPort": "Port of Shanghai",
+        "destinationPort": "Port of Sihanoukville",
+        "vessel": "MV Eastern Star Rose",
+        "shipDate": "2026-01-15",
+        "incoterms": "CIF",
+        "invoiceRef": "INV-2026-TTL-0201",
+        "declRef": "CN-EXP-2026-0201",
+        "status": "Delivered",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "Nordvik Fashion AB"
+      },
+      {
+        "ucr": "CN-2026-EXP-00202",
+        "product": "Denim Fabric (Indigo Warp, 12oz)",
+        "hsCode": "5209.42",
+        "quantity": "35,000 kg",
+        "totalValue": 157500,
+        "currency": "USD",
+        "exporter": "Silkway Textile Trading Co., Ltd",
+        "importer": "Angkor Thread Garments Co., Ltd",
+        "fromCountry": "China",
+        "toCountry": "Cambodia",
+        "originPort": "Port of Guangzhou",
+        "destinationPort": "Port of Sihanoukville",
+        "vessel": "MV Eastern Star Orchid",
+        "shipDate": "2026-02-10",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-TTL-0202",
+        "declRef": "CN-EXP-2026-0202",
+        "status": "In Transit",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "Nordvik Fashion AB"
+      }
+    ]
+  },
+  "documents": {
+    "alpha": [
+      {
+        "name": "Certificate of Origin (Form A)",
+        "docType": "Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Certificate of Origin Office (Cambodia)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Export Customs Office (Cambodia)",
+        "suffix": "ED"
+      },
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": null,
+        "issuerName": "Jadeway Logistics Cambodia",
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Corsair Shipping Cambodia",
+        "suffix": "BL"
+      }
+    ],
+    "beta": [
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Eastern Star Shipping Lines",
+        "suffix": "BL"
+      },
+      {
+        "name": "Certificate of Origin",
+        "docType": "Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Customs Office (China)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Customs Office (China)",
+        "suffix": "ED"
+      }
+    ]
+  },
+  "documentTemplates": {
+    "addressBook": {
+      "Cambodia": "Street 2, Angkor Thread Industrial Zone, Phnom Penh, Cambodia",
+      "China": "No. 58 Silk Avenue, Shanghai 200001, China",
+      "Sweden": "Hamngatan 9, 411 06 Gothenburg, Sweden",
+      "Netherlands": "Havenstraat 21, 3011 AB Rotterdam, Netherlands",
+      "United Kingdom": "Thistle House, 14 Market Street, Belfast BT1 2AA, UK"
+    },
+    "defaultCarrier": "Corsair Shipping",
+    "pdfTemplates": {
+      "Certificate of Origin": {
+        "lines": [
+          "CERTIFICATE OF ORIGIN (FORM A)",
+          "Generalized System of Preferences - EBA",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Origin: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This certificate is issued under the EU Generalised Scheme",
+          "of Preferences - Everything But Arms (EBA) arrangement for",
+          "Least Developed Countries.",
+          "",
+          "Origin criterion: Sufficient processing",
+          "",
+          "Issued by: Certificate of Origin Office (Cambodia)"
+        ]
+      },
+      "Export Declaration": {
+        "lines": [
+          "EXPORT DECLARATION",
+          "Export Customs Office (Cambodia)",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Declarant: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Export: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This declaration has been filed and processed through the",
+          "national customs clearance system.",
+          "",
+          "Issued by: Export Customs Office (Cambodia)"
+        ]
+      }
+    },
+    "xmlTemplates": {
+      "Certificate of Origin": {
+        "formType": "Form-A",
+        "issuingAuthority": "Certificate of Origin Office (Cambodia)",
+        "issuingSystem": "National eCO system",
+        "originCriterion": "SP",
+        "cumulationPartnerCountry": null,
+        "cumulationMaterialType": null
+      },
+      "Export Declaration": {
+        "declarantName": "Export Customs Office (Cambodia)",
+        "customsSystem": "National customs declaration system"
+      }
+    }
+  },
+  "finance": {
+    "currencies": [
+      "EUR",
+      "USD",
+      "KHR"
+    ],
+    "paymentMethods": [
+      "Bank Transfer",
+      "Letter of Credit",
+      "Open Account"
+    ],
+    "seedData": {
+      "payments": [
+        {
+          "consignmentUcr": "KH-2026-EXP-00101",
+          "invoiceRef": "INV-2026-ATG-0101",
+          "amount": 175000,
+          "currency": "EUR",
+          "dueDate": "2026-05-31",
+          "status": "Partially Paid",
+          "paidAmount": 87500,
+          "paymentMethod": "Letter of Credit",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "notes": "First instalment (50%) received via LC. Balance due on delivery confirmation at Gothenburg.",
+          "createdAt": "2026-03-05T09:00:00.000Z"
+        }
+      ],
+      "letterOfCredits": [
+        {
+          "consignmentUcr": "KH-2026-EXP-00101",
+          "lcNumber": "LC-2026-TLB-0101",
+          "issuingBank": "Meridian Trade Bank Cambodia",
+          "advisingBank": "Tonle Commercial Bank Plc.",
+          "beneficiary": "Angkor Thread Garments Co., Ltd",
+          "applicant": "Nordvik Fashion AB",
+          "amount": 175000,
+          "currency": "EUR",
+          "expiryDate": "2026-08-31",
+          "status": "Confirmed",
+          "creatorOrgId": "org1",
+          "createdAt": "2026-03-05T09:00:00.000Z"
+        },
+        {
+          "consignmentUcr": "KH-2026-EXP-00102",
+          "lcNumber": "LC-2026-TLB-0102",
+          "issuingBank": "Meridian Trade Bank Cambodia",
+          "advisingBank": "Tonle Commercial Bank Plc.",
+          "beneficiary": "Angkor Thread Garments Co., Ltd",
+          "applicant": "Nordvik Fashion AB",
+          "amount": 270000,
+          "currency": "EUR",
+          "expiryDate": "2026-07-31",
+          "status": "Issued",
+          "creatorOrgId": "org1",
+          "createdAt": "2026-03-15T10:00:00.000Z"
+        }
+      ],
+      "smartContracts": [
+        {
+          "consignmentUcr": "KH-2026-EXP-00101",
+          "contractRef": "SC-2026-KH-0101",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "amount": 175000,
+          "currency": "EUR",
+          "status": "Active",
+          "autoRelease": true,
+          "createdAt": "2026-03-05T09:00:00.000Z",
+          "conditions": [
+            {
+              "description": "Certificate of Origin (Form A) issued and EBA-compliant",
+              "docType": "Certificate of Origin",
+              "met": true,
+              "metAt": "2026-03-08T08:00:00.000Z"
+            },
+            {
+              "description": "Origin composition verified (Cambodia content >= 40%)",
+              "docType": "Bill of Material",
+              "met": true,
+              "metAt": "2026-03-08T09:00:00.000Z"
+            },
+            {
+              "description": "Bill of Lading verified and presented",
+              "docType": "Bill of Lading",
+              "met": false,
+              "metAt": null
+            },
+            {
+              "description": "EU customs clearance at destination (no EBA hold)",
+              "docType": null,
+              "met": false,
+              "metAt": null
+            }
+          ]
+        }
+      ],
+      "financeViewers": {
+        "KH-2026-EXP-00101": [
+          "org7",
+          "org8"
+        ]
+      }
+    }
+  },
+  "geography": {
+    "countries": {
+      "Cambodia": {
+        "iso": "116",
+        "coords": [
+          104.991,
+          12.5657
+        ],
+        "spread": 2.5
+      },
+      "China": {
+        "iso": "156",
+        "coords": [
+          104.1954,
+          35.8617
+        ],
+        "spread": 12.0
+      },
+      "Sweden": {
+        "iso": "752",
+        "coords": [
+          18.6435,
+          60.1282
+        ],
+        "spread": 3.0
+      },
+      "Netherlands": {
+        "iso": "528",
+        "coords": [
+          5.2913,
+          52.1326
+        ],
+        "spread": 1.5
+      },
+      "United Kingdom": {
+        "iso": "826",
+        "coords": [
+          -3.436,
+          55.3781
+        ],
+        "spread": 3.0
+      }
+    },
+    "specialMappings": {
+      "Sihanoukville": "Cambodia",
+      "EU": "Netherlands",
+      "International": null
+    },
+    "trustScoreLabel": "Verified Cambodian Exporter"
+  },
+  "regulations": [
+    {
+      "id": "eba",
+      "name": "Everything But Arms (EU GSP for LDCs)",
+      "displayLabel": "EBA",
+      "applicableToDestinations": [
+        "Sweden",
+        "Netherlands"
+      ],
+      "complianceFieldMapping": {
+        "Origin Content": "consignment.originComposition.localContentPercent",
+        "Sufficient Processing": "consignment.originComposition.calculationMethod"
+      }
+    },
+    {
+      "id": "dcts",
+      "name": "UK Developing Countries Trading Scheme",
+      "displayLabel": "DCTS",
+      "applicableToDestinations": [
+        "United Kingdom"
+      ],
+      "complianceFieldMapping": {
+        "Origin Content": "consignment.originComposition.localContentPercent"
+      }
+    }
+  ]
+}

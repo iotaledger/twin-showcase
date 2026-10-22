@@ -1,0 +1,592 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://kchain.solutions/schemas/twin-demo-config.json",
+  "title": "TWIN Demo Corridor Configuration",
+  "description": "Defines a complete trade corridor for the TWIN demo platform. Each JSON file represents one corridor (e.g., Vietnam-US garments, Kenya-EU tea). The corridor has two nodes: Alpha (exporting side) and Beta (importing side). To create a new corridor: 1) Choose an export country and its key products, 2) Identify real organizations (manufacturers, customs authorities, freight forwarders, banks), 3) Create realistic consignments with proper HS codes and trade routes, 4) Define the document chain for the corridor's regulatory framework, 5) Configure finance instruments typical for that trade relationship. Save as configs/{corridor-id}.json.",
+  "type": "object",
+  "required": ["corridor", "branding", "theme", "nodes", "credentials", "consignments", "documents", "documentTemplates", "finance", "geography"],
+  "additionalProperties": false,
+  "properties": {
+    "corridor": {
+      "type": "object",
+      "description": "Metadata identifying this trade corridor. The id determines the config filename and URL routing.",
+      "required": ["id", "name", "description", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]+$",
+          "description": "Unique kebab-case identifier. Used as config filename. Convention: {export-country}-{primary-import-country}.",
+          "examples": ["vietnam-us", "kenya-eu", "bangladesh-uk"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name shown in UI header. Mention the exporting country.",
+          "examples": ["Vietnam Export Corridor", "Kenya Tea Export Corridor"]
+        },
+        "description": {
+          "type": "string",
+          "description": "One-sentence summary of the corridor's products and destination markets.",
+          "examples": ["Vietnam garment and footwear exports to US, EU, and Japan markets"]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version. Increment when data changes.",
+          "examples": ["1.0.0"]
+        }
+      }
+    },
+    "branding": {
+      "type": "object",
+      "description": "UI branding: app name, tagline, logo, and node labels (Alpha = export side, Beta = import side).",
+      "required": ["appName", "tagline", "logo", "alpha", "beta"],
+      "additionalProperties": false,
+      "properties": {
+        "appName": { "type": "string", "description": "Header title. Convention: 'TWIN {Country}'.", "examples": ["TWIN Vietnam", "TWIN Kenya"] },
+        "tagline": { "type": "string", "description": "Subtitle below app name.", "examples": ["Trade & Logistics Platform"] },
+        "logo": { "type": "string", "pattern": "^/", "description": "Path to logo in client/public/. Must start with '/'.", "examples": ["/vietnam.png"] },
+        "alpha": { "$ref": "#/definitions/nodeLabel" },
+        "beta": { "$ref": "#/definitions/nodeLabel" }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "description": "Color theme. All values are CSS hex colors. Choose a bold accent that represents the corridor (national color, product association). The light variant should be nearly white with a hint of the accent.",
+      "required": ["accent", "accentLight", "navBg", "navHover", "navActive", "amber"],
+      "additionalProperties": false,
+      "properties": {
+        "accent": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "description": "Primary accent for buttons, active states, highlights.", "examples": ["#FF7200", "#006B3F"] },
+        "accentLight": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "description": "Light tint for hover backgrounds.", "examples": ["#fff4eb", "#e6f5ed"] },
+        "navBg": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "description": "Navigation sidebar background. Typically matches accent." },
+        "navHover": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "description": "Navigation hover background. Typically matches accentLight." },
+        "navActive": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "description": "Navigation active/selected color. Typically matches accent." },
+        "amber": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "description": "Warning accent for status badges and alerts." }
+      }
+    },
+    "nodes": {
+      "type": "object",
+      "description": "Two network nodes. Alpha = exporting/origin side, Beta = importing/destination side.",
+      "required": ["alpha", "beta"],
+      "additionalProperties": false,
+      "properties": {
+        "alpha": { "$ref": "#/definitions/nodeOrgs", "description": "Export side. Include: manufacturer(s), customs authority, CoO authority, input suppliers, inspectors, port authority, freight forwarder, carrier, local banks." },
+        "beta": { "$ref": "#/definitions/nodeOrgs", "description": "Import side. Include: importing buyers, destination customs authorities, and optionally destination banks." }
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "description": "Identity/credential verification config. Defines registration code formats, blocked codes, and test credentials.",
+      "required": ["blacklisted", "expired", "suspended", "registrationTypes", "attestationAuthorities", "defaultAuthority", "testCredentials"],
+      "additionalProperties": false,
+      "properties": {
+        "blacklisted": { "type": "array", "items": { "type": "string" }, "description": "Permanently denied codes. Convention: {PREFIX}-000000 per prefix.", "examples": [["MST-000000", "BRN-000000"]] },
+        "expired": { "type": "array", "items": { "type": "string" }, "description": "Expired codes. Convention: {PREFIX}-111111.", "examples": [["MST-111111"]] },
+        "suspended": { "type": "array", "items": { "type": "string" }, "description": "Suspended codes. Convention: {PREFIX}-222222.", "examples": [["MST-222222"]] },
+        "registrationTypes": {
+          "type": "object",
+          "description": "Map of 2-4 char uppercase prefixes to human-readable registration type names. Include the exporting country's primary business registration plus common international types (TIN, LEI, DUNS, EORI).",
+          "additionalProperties": { "type": "string" },
+          "examples": [{ "MST": "Vietnam Tax Code (Ma So Thue)", "TIN": "Tax Identification Number" }]
+        },
+        "attestationAuthorities": {
+          "type": "array",
+          "description": "Maps org roles to attestation authorities via substring match on the role field. First match wins.",
+          "items": {
+            "type": "object", "required": ["roleMatch", "authority"], "additionalProperties": false,
+            "properties": {
+              "roleMatch": { "type": "string", "description": "Substring matched against org role. Typically a country name.", "examples": ["Vietnam", "EU"] },
+              "authority": { "type": "string", "description": "Government/regulatory body name.", "examples": ["Export Customs Office (Vietnam)"] }
+            }
+          }
+        },
+        "defaultAuthority": { "type": "string", "description": "Fallback authority when no roleMatch matches.", "examples": ["National Business Registry"] },
+        "testCredentials": {
+          "type": "object",
+          "description": "Demo test credentials shown in the UI.",
+          "required": ["pass", "fail"], "additionalProperties": false,
+          "properties": {
+            "pass": { "type": "array", "description": "Codes that pass verification. One per major registration type.", "items": { "$ref": "#/definitions/testCredential" } },
+            "fail": { "type": "array", "description": "Codes that fail. Include one blacklisted, expired, suspended, and invalid prefix.", "items": { "$ref": "#/definitions/testCredential" } }
+          }
+        }
+      }
+    },
+    "consignments": {
+      "type": "object",
+      "description": "Seed shipment data. Alpha = exports from origin country. Beta = inbound raw materials/inputs. Include a mix of statuses and 1-2 error consignments.",
+      "required": ["alpha", "beta"], "additionalProperties": false,
+      "properties": {
+        "alpha": { "type": "array", "description": "Export consignments. 5-8 normal with varied statuses, plus 1-2 with errors.", "items": { "$ref": "#/definitions/consignment" } },
+        "beta": { "type": "array", "description": "Input/raw material consignments. Can be empty if not modeling input supply chain.", "items": { "$ref": "#/definitions/consignment" } }
+      }
+    },
+    "documents": {
+      "type": "object",
+      "description": "Document types attachable to consignments. issuerOrgId: specific org ID, 'creator' (consignment creator issues it), or null (use issuerName as static label).",
+      "required": ["alpha", "beta"], "additionalProperties": false,
+      "properties": {
+        "alpha": { "type": "array", "description": "Full export doc chain: input invoices, CoO, BOM, inspection, export declaration, invoice, packing list, bill of lading.", "items": { "$ref": "#/definitions/document" } },
+        "beta": { "type": "array", "description": "Simpler set: invoice, packing list, BL, CoO, export declaration.", "items": { "$ref": "#/definitions/document" } }
+      }
+    },
+    "documentTemplates": {
+      "type": "object",
+      "description": "Templates for generating document PDFs and structured XML data.",
+      "required": ["addressBook", "defaultCarrier", "pdfTemplates", "xmlTemplates"],
+      "additionalProperties": false,
+      "properties": {
+        "addressBook": {
+          "type": "object",
+          "description": "Country name -> street address. Include every country in consignments and org roles. Use real addresses.",
+          "additionalProperties": { "type": "string" },
+          "examples": [{ "Vietnam": "Lot 12, Lotus Bay Industrial Park, Thai Nguyen, Vietnam" }]
+        },
+        "defaultCarrier": { "type": "string", "description": "Default carrier for Bills of Lading.", "examples": ["Bluewave Container Line", "Midsea Shipping Company"] },
+        "pdfTemplates": {
+          "type": "object",
+          "description": "PDF templates keyed by document type name. Interpolation variables: ${ref} (doc reference), ${shipDate}, ${exporter}, ${importer}, ${ucr} (consignment UCR), ${fromCountry}, ${toCountry}, ${issuer}. Empty string '' = blank line.",
+          "additionalProperties": {
+            "type": "object", "required": ["lines"], "additionalProperties": false,
+            "properties": {
+              "lines": { "type": "array", "items": { "type": "string" }, "description": "Ordered text lines with ${ref}, ${shipDate}, ${exporter}, ${importer}, ${ucr}, ${fromCountry}, ${toCountry}, ${issuer} interpolation." }
+            }
+          }
+        },
+        "xmlTemplates": {
+          "type": "object",
+          "description": "Structured data templates keyed by document type name. Used for documents carrying machine-readable metadata. Free-form structure per document type. Common patterns: Bill of Material has 'originComposition' with localContentPercent, cptppCumulationApplied (boolean), thirdCountryContentPercent, and inputMaterials array (each with material, origin ISO 2-letter code, percent). Certificate of Origin has formType (e.g., 'EUR.1'), issuingAuthority, issuingSystem, originCriterion (e.g., 'RVC'), cumulationPartnerCountry, cumulationMaterialType. Export Declaration has declarantName and customsSystem.",
+          "additionalProperties": { "type": "object" }
+        }
+      }
+    },
+    "finance": {
+      "type": "object",
+      "description": "Trade finance: currencies, payment methods, and seed data linking to consignments via UCR.",
+      "required": ["currencies", "paymentMethods", "seedData"],
+      "additionalProperties": false,
+      "properties": {
+        "currencies": { "type": "array", "items": { "type": "string" }, "description": "ISO 4217 codes. Include USD plus local currencies.", "examples": [["USD", "EUR", "VND"]] },
+        "paymentMethods": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["Bank Transfer", "Letter of Credit", "Open Account", "Cash Against Documents"] },
+          "description": "Available payment methods. Include at least two."
+        },
+        "seedData": {
+          "type": "object",
+          "description": "Pre-populated finance records. All UCRs and org IDs must match consignments/nodes.",
+          "required": ["payments", "letterOfCredits", "smartContracts", "financeViewers"],
+          "additionalProperties": false,
+          "properties": {
+            "payments": { "type": "array", "description": "Include at least one Partially Paid and one Overdue.", "items": { "$ref": "#/definitions/payment" } },
+            "letterOfCredits": { "type": "array", "description": "Include at least one Confirmed and one Issued.", "items": { "$ref": "#/definitions/letterOfCredit" } },
+            "smartContracts": { "type": "array", "description": "Conditional payment contracts with mix of met/unmet conditions.", "items": { "$ref": "#/definitions/smartContract" } },
+            "financeViewers": {
+              "type": "object",
+              "description": "UCR -> org ID array. Grants finance view permission (typically banks).",
+              "additionalProperties": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "geography": {
+      "type": "object",
+      "description": "Map visualization data: country coordinates, location aliases, trust label.",
+      "required": ["countries", "specialMappings", "trustScoreLabel"],
+      "additionalProperties": false,
+      "properties": {
+        "countries": { "type": "object", "description": "Every country referenced in the config mapped to geo metadata.", "additionalProperties": { "$ref": "#/definitions/countryGeo" } },
+        "specialMappings": {
+          "type": "object",
+          "description": "Maps city/region strings from org roles to country names for map rendering. Null = hidden.",
+          "additionalProperties": { "type": ["string", "null"] },
+          "examples": [{ "Ho Chi Minh City": "Vietnam", "EU": "Netherlands", "International": null }]
+        },
+        "trustScoreLabel": { "type": "string", "description": "Label for verified entities on the map.", "examples": ["Verified Vietnamese Exporter"] }
+      }
+    },
+    "documentTypes": {
+      "type": "object",
+      "description": "Optional registry of document types valid for this corridor. Maps document type name to metadata including UNECE code, source system, issuing authority, and data classification (sourceOfTruth vs immutableSnapshot).",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["uneceCode", "dataClassification"],
+        "additionalProperties": false,
+        "properties": {
+          "uneceCode": {
+            "type": "string",
+            "description": "UN/CEFACT or WCO document type code.",
+            "examples": ["380", "861", "315"]
+          },
+          "dataClassification": {
+            "type": "string",
+            "enum": ["sourceOfTruth", "immutableSnapshot"],
+            "description": "sourceOfTruth = authoritative record maintained by issuer, immutableSnapshot = point-in-time copy anchored on ledger."
+          },
+          "sourceSystem": {
+            "type": "string",
+            "description": "IT system that produces this document (e.g., a national customs declaration system).",
+            "examples": ["National eCO system", "National customs declaration system"]
+          },
+          "issuingAuthority": {
+            "type": "string",
+            "description": "Organization or body that issues this document type.",
+            "examples": ["Certificate of Origin Office (Vietnam)", "Export Customs Office (Vietnam)"]
+          },
+          "requiresNotarization": {
+            "type": "boolean",
+            "description": "Whether this document must be notarized on the ledger for compliance."
+          }
+        }
+      }
+    },
+    "regulations": {
+      "type": "array",
+      "description": "Optional array of trade regulations applicable to this corridor. Each regulation specifies which destinations it applies to, a display label, and which config fields map to compliance requirements.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "displayLabel"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique kebab-case identifier for the regulation.",
+            "examples": ["uflpa", "evfta", "cptpp", "afcfta"]
+          },
+          "name": {
+            "type": "string",
+            "description": "Full official name of the regulation or trade agreement.",
+            "examples": ["Uyghur Forced Labor Prevention Act", "EU-Vietnam Free Trade Agreement", "Comprehensive and Progressive Agreement for Trans-Pacific Partnership"]
+          },
+          "displayLabel": {
+            "type": "string",
+            "description": "Short label for UI badges and status indicators.",
+            "examples": ["UFLPA", "EVFTA", "CPTPP", "AfCFTA"]
+          },
+          "applicableToDestinations": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Country names (matching geography.countries keys) where this regulation applies. Empty = applies to all.",
+            "examples": [["United States"], ["Netherlands", "Germany"]]
+          },
+          "complianceFieldMapping": {
+            "type": "object",
+            "description": "Maps regulation requirements to config fields. Keys are requirement labels, values are dot-path references to config data.",
+            "additionalProperties": { "type": "string" },
+            "examples": [{ "Origin Content": "consignment.originComposition.localContentPercent", "Forced Labor Attestation": "consignment.originComposition.inputMaterials" }]
+          }
+        }
+      }
+    },
+    "channels": {
+      "type": "array",
+      "description": "Optional two-channel architecture indicator. Declares data channels (e.g., Channel A = government single window, Channel B = TWIN). Shows how TWIN complements existing government systems rather than replacing them.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Channel identifier (e.g., 'A', 'B').",
+            "examples": ["A", "B"]
+          },
+          "label": {
+            "type": "string",
+            "description": "Short channel label.",
+            "examples": ["Government single window", "TWIN Network"]
+          },
+          "description": {
+            "type": "string",
+            "description": "Explanation of what flows through this channel.",
+            "examples": ["Official customs declarations, C/O applications, regulatory filings"]
+          },
+          "documentTypes": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Document type names that flow through this channel.",
+            "examples": [["Export Declaration", "Export Certificate of Origin"]]
+          },
+          "systems": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "IT systems associated with this channel.",
+            "examples": [["National customs declaration system", "National eCO system", "National single window"]]
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "nodeLabel": {
+      "type": "object",
+      "description": "Display label for a network node tab in the UI.",
+      "required": ["label", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Short label shown in tabs and node switcher. Convention: 'Alpha' for the exporting side, 'Beta' for the importing side.",
+          "examples": ["Alpha", "Beta"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Descriptive subtitle explaining what this side of the corridor represents.",
+          "examples": ["Vietnam Export Corridor", "Importers / Destination Markets", "Kenya Tea Producers", "European Buyers"]
+        }
+      }
+    },
+    "nodeOrgs": {
+      "type": "object",
+      "required": ["orgs"],
+      "additionalProperties": false,
+      "properties": {
+        "orgs": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/org" },
+          "minItems": 1,
+          "description": "Organizations registered on this node. Each org gets a login account and can perform actions scoped to their role. Alpha typically has 8-12 orgs, Beta has 2-4."
+        }
+      }
+    },
+    "org": {
+      "type": "object",
+      "description": "An organization participating in the trade corridor. Each maps to a user account in the demo system.",
+      "required": ["id", "name", "role", "username", "password", "orgType"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string", "pattern": "^org\\d+$",
+          "description": "Unique sequential ID. Referenced by consignment creatorOrgId, document issuerOrgId, and finance payorOrgId/payeeOrgId. IDs must be unique across both nodes.",
+          "examples": ["org1", "org2", "org13"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Full legal name of the organization. Use real company and authority names for realism.",
+          "examples": ["Lotus Bay Apparel JSC", "Export Customs Office (Vietnam)", "Northpeak Athletics Inc."]
+        },
+        "role": {
+          "type": "string",
+          "description": "Role description. Convention: '{Role Type} - {Country/Region}'. Valid role types: Manufacturer, Customs Authority, Certificate of Origin Authority, Input Supplier, Importing Buyer, Quality Inspector, Port Authority, Freight Forwarder, Carrier, Financier.",
+          "examples": ["Manufacturer - Vietnam", "Customs Authority - United States", "Importing Buyer - EU", "Financier - International"]
+        },
+        "username": {
+          "type": "string", "pattern": "^[a-z][a-z0-9]+$",
+          "description": "Lowercase login username derived from org name. Must be unique across both nodes.",
+          "examples": ["lotusbay", "vncustoms", "northpeak", "bluewave"]
+        },
+        "password": {
+          "type": "string", "const": "demo",
+          "description": "Login password. Always 'demo' for demo environments."
+        },
+        "orgType": {
+          "type": "string", "enum": ["public", "private"],
+          "description": "'public' for government/regulatory bodies (customs, ministries). 'private' for companies (manufacturers, buyers, banks, carriers). Affects UI badge styling."
+        },
+        "regulatoryAuthority": {
+          "type": "string",
+          "description": "For government orgs: the regulatory body this org represents. Used for attestation display and credential verification flows.",
+          "examples": ["Export Customs Office (Vietnam)", "Certificate of Origin Office (Vietnam)"]
+        },
+        "governmentSystem": {
+          "type": "string",
+          "description": "For government orgs: the IT system they operate (e.g., a national customs declaration system). Shown in document templates and export declarations.",
+          "examples": ["National customs declaration system", "National eCO system", "Port community system"]
+        },
+        "digitalSignatureCapability": {
+          "type": "boolean",
+          "description": "Whether this org has digital signature capability for electronic documents. Relevant for government orgs issuing certificates."
+        }
+      }
+    },
+    "testCredential": {
+      "type": "object", "required": ["code", "description"], "additionalProperties": false,
+      "properties": {
+        "code": { "type": "string", "pattern": "^[A-Z]{1,4}-[A-Za-z0-9]+$", "description": "{PREFIX}-{VALUE}. PREFIX from registrationTypes or 'X' for invalid.", "examples": ["MST-123456", "X-anything"] },
+        "description": { "type": "string", "description": "For pass: registration type name. For fail: failure reason.", "examples": ["Vietnam Tax Code (Ma So Thue)", "Denied - blacklisted"] }
+      }
+    },
+    "consignment": {
+      "type": "object",
+      "description": "A shipment record. errorType and errorDescription are optional (null for normal consignments, set for error demos).",
+      "required": ["ucr", "product", "hsCode", "quantity", "totalValue", "currency", "exporter", "importer", "fromCountry", "toCountry", "originPort", "destinationPort", "vessel", "shipDate", "incoterms", "invoiceRef", "declRef", "status", "creatorOrgId", "creatorOrgName"],
+      "additionalProperties": false,
+      "properties": {
+        "ucr": { "type": "string", "pattern": "^[A-Z]{2}-\\d{4}-EXP-[A-Z0-9]+$", "description": "{CC}-{YEAR}-EXP-{NNNNN} normal, {CC}-{YEAR}-EXP-E{NNN} error. CC = ISO 2-letter country.", "examples": ["VN-2026-EXP-00101", "VN-2026-EXP-E001"] },
+        "product": { "type": "string", "description": "Specific product description with material, type, form.", "examples": ["Men's Cotton Polo Shirts (Knitted)", "CTC Black Tea (BP1 Grade)"] },
+        "hsCode": { "type": "string", "pattern": "^\\d{4}(\\.\\d{2,4})?$", "description": "Real Harmonized System code matching the product.", "examples": ["6105.10", "0902.30"] },
+        "quantity": { "type": "string", "description": "Quantity with unit (comma-separated thousands).", "examples": ["24,000 pcs", "45,000 kg"] },
+        "totalValue": { "type": "number", "minimum": 0, "description": "Declared value (no currency symbol).", "examples": [168000] },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217 code. Must be in finance.currencies." },
+        "exporter": { "type": "string", "description": "Exporting organization name. Must match an org name in nodes.alpha.orgs or nodes.beta.orgs." },
+        "importer": { "type": "string", "description": "Importing organization name. Must match an org name in nodes.alpha.orgs or nodes.beta.orgs." },
+        "fromCountry": { "type": "string", "description": "Must match a key in geography.countries.", "examples": ["Vietnam"] },
+        "toCountry": { "type": "string", "description": "Must match a key in geography.countries.", "examples": ["United States"] },
+        "originPort": { "type": "string", "description": "Real port/terminal name.", "examples": ["Port of Ho Chi Minh City"] },
+        "destinationPort": { "type": "string", "description": "Real port/terminal name.", "examples": ["Port of Los Angeles"] },
+        "vessel": { "type": "string", "description": "Convention: 'MV {Carrier} {Name}'.", "examples": ["MV Bluewave Seletar"] },
+        "shipDate": { "type": "string", "format": "date", "description": "ISO 8601 (YYYY-MM-DD). Space across 1-3 months.", "examples": ["2026-03-10"] },
+        "incoterms": { "type": "string", "enum": ["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"], "description": "Incoterms 2020. FOB most common for container exports." },
+        "invoiceRef": { "type": "string", "description": "INV-{YEAR}-{ORG}-{NNNNN}.", "examples": ["INV-2026-LBA-0101"] },
+        "declRef": { "type": "string", "description": "{CC}-EXP-{YEAR}-{NNNNN}.", "examples": ["VN-EXP-2026-0101"] },
+        "status": { "type": "string", "enum": ["Submitted", "Customs", "Released", "In Transit", "Delivered", "Under Review"], "description": "Vary across consignments for realism." },
+        "creatorOrgId": { "type": "string", "pattern": "^org\\d+$", "description": "Org ID of the creator." },
+        "creatorOrgName": { "type": "string", "description": "Name matching creatorOrgId." },
+        "errorType": { "type": ["string", "null"], "description": "Error label for demo discrepancies. Null for normal.", "examples": ["HS Code Mismatch", "Origin Verification Failed", null] },
+        "errorDescription": {
+          "type": ["string", "null"],
+          "description": "Detailed error description that references specific documents, regulations, or compliance thresholds. Should explain what went wrong and which authority flagged the issue. Null for normal consignments.",
+          "examples": [
+            "Export Declaration filed under HS 6205.30 (man-made fibres) but Commercial Invoice declares HS 6205.20 (cotton). Customs has flagged the shipment for reconciliation.",
+            "Origin composition shows 38% local value-added content (below 40% threshold). Non-FTA supplier materials exceed allowable limits.",
+            null
+          ]
+        },
+        "originComposition": {
+          "type": ["object", "null"],
+          "description": "Origin composition data for rules-of-origin compliance. Required for corridors with FTA preferential tariff (CPTPP, EVFTA, AfCFTA). Null or omitted for consignments where origin tracking is not applicable.",
+          "properties": {
+            "localContentPercent": {
+              "type": "number", "minimum": 0, "maximum": 100,
+              "description": "Percentage of value added in the exporting country.",
+              "examples": [65.5, 38.0]
+            },
+            "calculationMethod": {
+              "type": "string",
+              "enum": ["RVC", "CTC", "SP", "BUILD_DOWN", "BUILD_UP"],
+              "description": "Rules of origin calculation method. RVC = Regional Value Content, CTC = Change in Tariff Classification, SP = Specific Process, BUILD_DOWN/BUILD_UP = alternative RVC formulas.",
+              "examples": ["RVC"]
+            },
+            "threshold": {
+              "type": "number", "minimum": 0, "maximum": 100,
+              "description": "Minimum local content percentage required for FTA eligibility.",
+              "examples": [40, 55]
+            },
+            "cptppCumulationApplied": {
+              "type": "boolean",
+              "description": "Whether FTA cumulation (e.g., CPTPP, EVFTA) with partner countries is applied."
+            },
+            "inputMaterials": {
+              "type": "array",
+              "description": "Breakdown of input materials by origin country and value share.",
+              "items": {
+                "type": "object",
+                "required": ["material", "supplierCountry", "valuePercent"],
+                "additionalProperties": false,
+                "properties": {
+                  "material": { "type": "string", "description": "Material name.", "examples": ["Fabric", "Thread", "Labor"] },
+                  "supplierCountry": { "type": "string", "description": "ISO 2-letter country code of the supplier.", "examples": ["VN", "KR", "CN"] },
+                  "valuePercent": { "type": "number", "minimum": 0, "maximum": 100, "description": "Percentage of total value." },
+                  "ftaMember": { "type": "boolean", "description": "Whether the supplier country is a member of the applicable FTA." }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "document": {
+      "type": "object",
+      "description": "A document type definition for consignment attachment.",
+      "required": ["name", "docType", "issuerOrgId", "issuerName", "suffix"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "description": "Display name in UI.", "examples": ["Commercial Invoice", "Bill of Lading"] },
+        "docType": { "type": "string", "description": "Type identifier. Usually matches name. Used to look up templates in documentTemplates.pdfTemplates and documentTemplates.xmlTemplates.", "examples": ["Commercial Invoice", "Export Declaration", "Bill of Lading"] },
+        "issuerOrgId": { "type": ["string", "null"], "description": "'creator' = consignment creator issues it, 'orgN' = specific org, null = external (use issuerName).", "examples": ["creator", "org3", null] },
+        "issuerName": { "type": ["string", "null"], "description": "Static issuer name when issuerOrgId is null. Null otherwise.", "examples": ["Clearview Inspection Services Vietnam", null] },
+        "suffix": { "type": "string", "pattern": "^[A-Z]{1,4}(-[A-Z])?$", "description": "2-3 char suffix for doc references.", "examples": ["CI-I", "BOM", "CO", "INV", "BL"] }
+      }
+    },
+    "payment": {
+      "type": "object", "required": ["consignmentUcr", "invoiceRef", "amount", "currency", "dueDate", "status", "paidAmount", "paymentMethod", "payorOrgId", "payeeOrgId", "notes", "createdAt"],
+      "additionalProperties": false,
+      "properties": {
+        "consignmentUcr": { "type": "string", "description": "UCR of the linked consignment. Must match a consignment in the consignments section." },
+        "invoiceRef": { "type": "string", "description": "Invoice reference. Must match the invoiceRef of the linked consignment." },
+        "amount": { "type": "number", "minimum": 0, "description": "Total payment amount due. Should match the consignment totalValue." },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217 currency code. Must be in finance.currencies." },
+        "dueDate": { "type": "string", "format": "date", "description": "Payment due date (YYYY-MM-DD). Set some in the past for overdue demo scenarios." },
+        "status": { "type": "string", "enum": ["Pending", "Partially Paid", "Paid", "Overdue", "Cancelled"], "description": "Current payment status. Vary across seed data." },
+        "paidAmount": { "type": "number", "minimum": 0, "description": "Amount already paid. 0 for unpaid, partial amount for Partially Paid, full amount for Paid." },
+        "paymentMethod": { "type": "string", "description": "Must be one of the values in finance.paymentMethods.", "examples": ["Letter of Credit", "Bank Transfer"] },
+        "payorOrgId": { "type": "string", "pattern": "^org\\d+$", "description": "Org ID of the payer (typically the importer)." },
+        "payeeOrgId": { "type": "string", "pattern": "^org\\d+$", "description": "Org ID of the payee (typically the exporter)." },
+        "notes": { "type": "string", "description": "Human-readable context about payment status, partial payments, delays, or conditions." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "ISO 8601 datetime when the payment record was created." }
+      }
+    },
+    "letterOfCredit": {
+      "type": "object", "required": ["consignmentUcr", "lcNumber", "issuingBank", "advisingBank", "beneficiary", "applicant", "amount", "currency", "expiryDate", "status", "creatorOrgId", "createdAt"],
+      "additionalProperties": false,
+      "properties": {
+        "consignmentUcr": { "type": "string", "description": "UCR of the consignment this LC covers. Must match a consignment." },
+        "lcNumber": { "type": "string", "description": "Unique LC reference. Convention: LC-{YEAR}-{BANK_ABBREV}-{NNNNN}.", "examples": ["LC-2026-MEK-0101"] },
+        "issuingBank": { "type": "string", "description": "Bank issuing the LC. Typically a major international bank operating in the corridor.", "examples": ["Meridian Trade Bank Vietnam", "Savanna Development Bank"] },
+        "advisingBank": { "type": "string", "description": "Advising bank in the exporting country.", "examples": ["Mekong Commercial Bank", "Highlands Bank Kenya"] },
+        "beneficiary": { "type": "string", "description": "LC beneficiary (the exporter who receives payment). Must match an org name." },
+        "applicant": { "type": "string", "description": "LC applicant (the importer who requests the LC). Must match an org name." },
+        "amount": { "type": "number", "minimum": 0, "description": "LC amount. Should match the consignment totalValue." },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217 currency code." },
+        "expiryDate": { "type": "string", "format": "date", "description": "LC expiry date. Typically 3-6 months after shipment date." },
+        "status": { "type": "string", "enum": ["Draft", "Issued", "Confirmed", "Amended", "Expired", "Closed"], "description": "Current LC status." },
+        "creatorOrgId": { "type": "string", "pattern": "^org\\d+$", "description": "Org ID that created/requested the LC." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "ISO 8601 datetime when the LC was created." }
+      }
+    },
+    "smartContract": {
+      "type": "object",
+      "description": "Conditional payment contract. Funds released when all conditions met.",
+      "required": ["consignmentUcr", "contractRef", "payorOrgId", "payeeOrgId", "amount", "currency", "status", "autoRelease", "createdAt", "conditions"],
+      "additionalProperties": false,
+      "properties": {
+        "consignmentUcr": { "type": "string", "description": "UCR of the consignment this contract covers." },
+        "contractRef": { "type": "string", "description": "Unique reference. Convention: SC-{YEAR}-{CC}-{NNNNN}.", "examples": ["SC-2026-VN-0101", "SC-2026-KE-0101"] },
+        "payorOrgId": { "type": "string", "pattern": "^org\\d+$", "description": "Org ID of the payer (importer)." },
+        "payeeOrgId": { "type": "string", "pattern": "^org\\d+$", "description": "Org ID of the payee (exporter)." },
+        "amount": { "type": "number", "minimum": 0, "description": "Contract amount. Should match consignment totalValue." },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217 currency code." },
+        "status": { "type": "string", "enum": ["Draft", "Active", "Completed", "Cancelled"], "description": "Current contract status." },
+        "autoRelease": { "type": "boolean", "description": "Whether funds are automatically released when all conditions are met. Typically true." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "ISO 8601 datetime when the contract was created." },
+        "conditions": {
+          "type": "array", "minItems": 1,
+          "description": "3-5 conditions per contract. Mix met and unmet for realism.",
+          "items": {
+            "type": "object", "required": ["description", "docType", "met", "metAt"], "additionalProperties": false,
+            "properties": {
+              "description": { "type": "string", "description": "Condition text referencing documents/regulations.", "examples": ["Bill of Lading verified and presented"] },
+              "docType": { "type": ["string", "null"], "description": "Document type that satisfies this. Null for non-document conditions.", "examples": ["Bill of Lading", null] },
+              "met": { "type": "boolean" },
+              "metAt": { "type": ["string", "null"], "format": "date-time", "description": "When met. Null if unmet." }
+            }
+          }
+        }
+      }
+    },
+    "countryGeo": {
+      "type": "object",
+      "description": "Geographic metadata for a country on the trade network map.",
+      "required": ["iso", "coords", "spread"],
+      "additionalProperties": false,
+      "properties": {
+        "iso": {
+          "type": "string", "pattern": "^\\d{3}$",
+          "description": "ISO 3166-1 numeric country code as a 3-digit string.",
+          "examples": ["704", "840", "404", "050"]
+        },
+        "coords": {
+          "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2,
+          "description": "Map center as [longitude, latitude]. Use the geographic center of the country.",
+          "examples": [[108.2772, 14.0583], [-95.7129, 37.0902], [36.8219, -1.2921]]
+        },
+        "spread": {
+          "type": "number", "minimum": 0.5, "maximum": 20.0,
+          "description": "Visual spread radius for rendering multiple entities in the same country. Small countries (Netherlands, South Korea): 1.5-2.0, medium (Vietnam, Germany, Kenya): 2.5-3.5, large (US, China): 5.0-12.0.",
+          "examples": [3.5, 12.0, 1.5]
+        }
+      }
+    }
+  }
+}

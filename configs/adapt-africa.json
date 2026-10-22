@@ -1,0 +1,635 @@
+{
+  "corridor": {
+    "id": "adapt-africa",
+    "name": "ADAPT Africa Trade Corridor",
+    "description": "Africa Digital Access & Public Infrastructure for Trade. Morocco phosphate exports to Nigeria, Kenya agricultural exports to EU/UK, and Nigerian commodity exports to EU.",
+    "version": "1.1.0"
+  },
+  "branding": {
+    "appName": "ADAPT",
+    "tagline": "Africa Digital Access & Public Infrastructure for Trade",
+    "logo": "/adapt.png",
+    "alpha": {
+      "label": "Alpha",
+      "description": "Africa Export Hub (Morocco & Kenya)"
+    },
+    "beta": {
+      "label": "Beta",
+      "description": "Destination Markets (Nigeria & EU)"
+    }
+  },
+  "theme": {
+    "accent": "#1B7A3D",
+    "accentLight": "#e8f5ed",
+    "navBg": "#1B7A3D",
+    "navHover": "#e8f5ed",
+    "navActive": "#1B7A3D",
+    "amber": "#D4A843"
+  },
+  "nodes": {
+    "alpha": {
+      "orgs": [
+        {
+          "id": "org1",
+          "name": "Atlas Phosphates Group",
+          "role": "Phosphate Exporter - Morocco",
+          "username": "atlasphos",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org2",
+          "name": "Kenya Trade Hub Ltd",
+          "role": "Agricultural Exporter - Kenya",
+          "username": "ktrade",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org3",
+          "name": "Export Customs Office (Morocco)",
+          "role": "Customs Authority - Morocco",
+          "username": "moroccocustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Export Customs Office (Morocco)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org4",
+          "name": "Export Customs Office (Kenya)",
+          "role": "Customs Authority - Kenya",
+          "username": "kenyacustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Export Customs Office (Kenya)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org7",
+          "name": "AfriTrade Bank",
+          "role": "Financier - Morocco",
+          "username": "afribank",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org8",
+          "name": "Savanna Development Bank",
+          "role": "Financier - Kenya",
+          "username": "savannabank",
+          "password": "demo",
+          "orgType": "private"
+        }
+      ]
+    },
+    "beta": {
+      "orgs": [
+        {
+          "id": "org5",
+          "name": "PrimeFert Industries",
+          "role": "Fertilizer Importer - Nigeria",
+          "username": "primefert",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org6",
+          "name": "EuroFresh Imports B.V.",
+          "role": "Agricultural Importer - Netherlands",
+          "username": "eurofresh",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org13",
+          "name": "Import Customs Office (Nigeria)",
+          "role": "Customs Authority - Nigeria",
+          "username": "nigeriacustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Import Customs Office (Nigeria)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org14",
+          "name": "EU Import Customs Office (Netherlands)",
+          "role": "Customs Authority - Netherlands",
+          "username": "eucustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "EU Import Customs Office (Netherlands)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        }
+      ]
+    }
+  },
+  "credentials": {
+    "blacklisted": [
+      "ICE-000000",
+      "BRN-000000"
+    ],
+    "expired": [
+      "ICE-111111"
+    ],
+    "suspended": [
+      "ICE-222222"
+    ],
+    "registrationTypes": {
+      "ICE": "Morocco Identifiant Commun de l'Entreprise",
+      "KRA": "Kenya tax PIN",
+      "RC": "Nigeria company registration (RC) number",
+      "EORI": "EU Economic Operator ID",
+      "BRN": "Business Registration Number",
+      "TIN": "Tax Identification Number",
+      "LEI": "Legal Entity Identifier",
+      "DUNS": "DUNS Number"
+    },
+    "attestationAuthorities": [
+      {
+        "roleMatch": "Morocco",
+        "authority": "Export Customs Office (Morocco)"
+      },
+      {
+        "roleMatch": "Kenya",
+        "authority": "Export Customs Office (Kenya)"
+      },
+      {
+        "roleMatch": "Nigeria",
+        "authority": "Import Customs Office (Nigeria)"
+      },
+      {
+        "roleMatch": "Netherlands",
+        "authority": "EU Import Customs Office (Netherlands)"
+      }
+    ],
+    "defaultAuthority": "National Business Registry",
+    "testCredentials": {
+      "pass": [
+        {
+          "code": "ICE-123456",
+          "description": "Morocco Identifiant Commun de l'Entreprise"
+        },
+        {
+          "code": "KRA-254789",
+          "description": "Kenya tax PIN"
+        },
+        {
+          "code": "RC-987654",
+          "description": "Nigeria company registration number"
+        },
+        {
+          "code": "EORI-456123",
+          "description": "EU Economic Operator ID"
+        }
+      ],
+      "fail": [
+        {
+          "code": "ICE-000000",
+          "description": "Denied - blacklisted"
+        },
+        {
+          "code": "ICE-111111",
+          "description": "Expired licence"
+        },
+        {
+          "code": "ICE-222222",
+          "description": "Suspended - under review"
+        },
+        {
+          "code": "X-anything",
+          "description": "Invalid prefix"
+        }
+      ]
+    }
+  },
+  "consignments": {
+    "alpha": [
+      {
+        "ucr": "MA-2024-EXP-00001",
+        "product": "DAP Fertilizer (Diammonium Phosphate)",
+        "hsCode": "3105.30",
+        "quantity": "5,000 MT",
+        "totalValue": 340000,
+        "currency": "USD",
+        "exporter": "Atlas Phosphates Group",
+        "importer": "PrimeFert Industries",
+        "fromCountry": "Morocco",
+        "toCountry": "Nigeria",
+        "originPort": "Port of Jorf Lasfar",
+        "destinationPort": "Port of Lagos (Apapa)",
+        "vessel": "MV African Dawn",
+        "shipDate": "2024-11-15",
+        "incoterms": "CFR",
+        "invoiceRef": "INV-2024-APG-001",
+        "declRef": "MA-EXP-2024-001",
+        "status": "Delivered",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Atlas Phosphates Group"
+      },
+      {
+        "ucr": "MA-2024-EXP-00002",
+        "product": "TSP Fertilizer (Triple Super Phosphate)",
+        "hsCode": "3103.19",
+        "quantity": "3,200 MT",
+        "totalValue": 288000,
+        "currency": "EUR",
+        "exporter": "Atlas Phosphates Group",
+        "importer": "PrimeFert Industries",
+        "fromCountry": "Morocco",
+        "toCountry": "Nigeria",
+        "originPort": "Port of Casablanca",
+        "destinationPort": "Port of Lagos (Apapa)",
+        "vessel": "MV Sahel Trader",
+        "shipDate": "2024-12-01",
+        "incoterms": "CIF",
+        "invoiceRef": "INV-2024-APG-002",
+        "declRef": "MA-EXP-2024-002",
+        "status": "In Transit",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Atlas Phosphates Group"
+      },
+      {
+        "ucr": "MA-2024-EXP-E001",
+        "product": "NPK Blend Fertilizer (15-15-15)",
+        "hsCode": "3105.20",
+        "quantity": "2,500 MT",
+        "totalValue": 195000,
+        "currency": "USD",
+        "exporter": "Atlas Phosphates Group",
+        "importer": "PrimeFert Industries",
+        "fromCountry": "Morocco",
+        "toCountry": "Nigeria",
+        "originPort": "Port of Casablanca",
+        "destinationPort": "Port of Lagos (Tin Can Island)",
+        "vessel": "MV West Africa Express",
+        "shipDate": "2025-01-08",
+        "incoterms": "CFR",
+        "invoiceRef": "INV-2025-APG-E01",
+        "declRef": "MA-EXP-2025-E01",
+        "status": "Under Review",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Atlas Phosphates Group",
+        "errorType": "HS Code Mismatch",
+        "errorDescription": "Export Declaration filed under HS 3105.51 (containing nitrates and phosphates) but Commercial Invoice declares HS 3105.20 (NPK blend). Import Customs Office (Nigeria) has flagged the shipment for tariff reconciliation."
+      }
+    ],
+    "beta": [
+      {
+        "ucr": "NG-2024-EXP-00001",
+        "product": "Raw Sesame Seeds (Hulled, Grade A)",
+        "hsCode": "1207.40",
+        "quantity": "30,000 kg",
+        "totalValue": 165000,
+        "currency": "USD",
+        "exporter": "PrimeFert Industries",
+        "importer": "EuroFresh Imports B.V.",
+        "fromCountry": "Nigeria",
+        "toCountry": "Netherlands",
+        "originPort": "Port of Lagos (Apapa)",
+        "destinationPort": "Port of Rotterdam",
+        "vessel": "MV Mediterranean Bridge",
+        "shipDate": "2024-12-10",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2024-PFI-001",
+        "declRef": "NG-EXP-2024-001",
+        "status": "In Transit",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "PrimeFert Industries"
+      },
+      {
+        "ucr": "NG-2024-EXP-00002",
+        "product": "Premium Cocoa Beans (Grade 1)",
+        "hsCode": "1801.00",
+        "quantity": "45,000 kg",
+        "totalValue": 312000,
+        "currency": "EUR",
+        "exporter": "PrimeFert Industries",
+        "importer": "EuroFresh Imports B.V.",
+        "fromCountry": "Nigeria",
+        "toCountry": "Netherlands",
+        "originPort": "Port of Lagos (Apapa)",
+        "destinationPort": "Port of Rotterdam",
+        "vessel": "MV Marrakech Star",
+        "shipDate": "2024-11-20",
+        "incoterms": "CIF",
+        "invoiceRef": "INV-2024-PFI-002",
+        "declRef": "NG-EXP-2024-002",
+        "status": "Customs",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "PrimeFert Industries"
+      },
+      {
+        "ucr": "NG-2024-EXP-E001",
+        "product": "Shea Butter (Unrefined, Grade A)",
+        "hsCode": "1515.90",
+        "quantity": "12,000 kg",
+        "totalValue": 89500,
+        "currency": "EUR",
+        "exporter": "PrimeFert Industries",
+        "importer": "EuroFresh Imports B.V.",
+        "fromCountry": "Nigeria",
+        "toCountry": "Netherlands",
+        "originPort": "Port of Lagos (Tin Can Island)",
+        "destinationPort": "Port of Rotterdam",
+        "vessel": "MV West Africa Express",
+        "shipDate": "2025-01-20",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2025-PFI-E01",
+        "declRef": "NG-EXP-2025-E01",
+        "status": "Under Review",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "PrimeFert Industries",
+        "errorType": "Phytosanitary Failure",
+        "errorDescription": "Shea butter samples failed aflatoxin testing at EU border (NVWA, Netherlands). NAFDAC export certificate references batch SB-2025-A12 but shipping documents show SB-2025-A13. Import held pending re-testing per EU Regulation 2023/915."
+      }
+    ]
+  },
+  "documents": {
+    "alpha": [
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Midsea Shipping Company",
+        "suffix": "BL"
+      },
+      {
+        "name": "Certificate of Origin",
+        "docType": "Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Export Customs Office (Morocco)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Export Customs Office (Morocco)",
+        "suffix": "ED"
+      }
+    ],
+    "beta": [
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Midsea Shipping Company",
+        "suffix": "BL"
+      },
+      {
+        "name": "Certificate of Origin",
+        "docType": "Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Import Customs Office (Nigeria)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Import Customs Office (Nigeria)",
+        "suffix": "ED"
+      }
+    ]
+  },
+  "documentTemplates": {
+    "addressBook": {
+      "Morocco": "Zone Industrielle Atlas, El Jadida, Morocco",
+      "Kenya": "P.O. Box 41200, Moi Avenue, Nairobi, Kenya",
+      "Nigeria": "Plot 1, Block A, Alausa Industrial Estate, Lagos, Nigeria",
+      "Netherlands": "Bloemenweg 7, 1431 AA Aalsmeer, Netherlands"
+    },
+    "defaultCarrier": "Midsea Shipping Company",
+    "pdfTemplates": {
+      "Certificate of Origin": {
+        "lines": [
+          "CERTIFICATE OF ORIGIN",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Origin: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This certifies that the goods described herein originate",
+          "in ${fromCountry} in accordance with applicable rules of origin",
+          "and the African Continental Free Trade Area (AfCFTA) agreement.",
+          "",
+          "Issued by: ${issuer}"
+        ]
+      },
+      "Phytosanitary Certificate": {
+        "lines": [
+          "PHYTOSANITARY CERTIFICATE",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "This certifies that the plants or plant products described herein",
+          "have been inspected according to appropriate procedures and are",
+          "considered to be free from quarantine pests.",
+          "",
+          "Issued by: ${issuer}"
+        ]
+      },
+      "Export Declaration": {
+        "lines": [
+          "EXPORT DECLARATION",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Declarant: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Export: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This declaration has been filed and processed through the",
+          "national customs clearance system.",
+          "",
+          "Issued by: ${issuer}"
+        ]
+      }
+    },
+    "xmlTemplates": {
+      "Certificate of Origin": {
+        "formType": "AfCFTA-CO",
+        "issuingAuthority": "National Customs Authority",
+        "issuingSystem": "National eCO system",
+        "originCriterion": "WO",
+        "cumulationPartnerCountry": null,
+        "cumulationMaterialType": null
+      },
+      "Export Declaration": {
+        "declarantName": "National Customs Authority",
+        "customsSystem": "National customs declaration system"
+      }
+    }
+  },
+  "finance": {
+    "currencies": [
+      "USD",
+      "EUR",
+      "NGN",
+      "MAD",
+      "KES"
+    ],
+    "paymentMethods": [
+      "Bank Transfer",
+      "Letter of Credit",
+      "Open Account",
+      "Cash Against Documents"
+    ],
+    "seedData": {
+      "payments": [
+        {
+          "consignmentUcr": "MA-2024-EXP-00001",
+          "invoiceRef": "INV-2024-APG-001",
+          "amount": 340000,
+          "currency": "USD",
+          "dueDate": "2025-02-15",
+          "status": "Partially Paid",
+          "paidAmount": 170000,
+          "paymentMethod": "Letter of Credit",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "notes": "First instalment (50%) received via LC. Balance due upon delivery confirmation at Lagos.",
+          "createdAt": "2024-11-15T09:00:00.000Z"
+        }
+      ],
+      "letterOfCredits": [
+        {
+          "consignmentUcr": "MA-2024-EXP-00001",
+          "lcNumber": "LC-2024-AFR-001",
+          "issuingBank": "AfriTrade Bank",
+          "advisingBank": "Savanna Development Bank",
+          "beneficiary": "Atlas Phosphates Group",
+          "applicant": "PrimeFert Industries",
+          "amount": 340000,
+          "currency": "USD",
+          "expiryDate": "2025-05-15",
+          "status": "Confirmed",
+          "creatorOrgId": "org1",
+          "createdAt": "2024-11-15T09:00:00.000Z"
+        }
+      ],
+      "smartContracts": [
+        {
+          "consignmentUcr": "MA-2024-EXP-00001",
+          "contractRef": "SC-2024-AFR-001",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "amount": 340000,
+          "currency": "USD",
+          "status": "Active",
+          "autoRelease": true,
+          "createdAt": "2024-11-15T09:00:00.000Z",
+          "conditions": [
+            {
+              "description": "Bill of Lading verified and presented",
+              "docType": "Bill of Lading",
+              "met": true,
+              "metAt": "2024-11-20T14:00:00.000Z"
+            },
+            {
+              "description": "AfCFTA Certificate of Origin validated",
+              "docType": "Certificate of Origin",
+              "met": false,
+              "metAt": null
+            },
+            {
+              "description": "Import customs clearance confirmed at Lagos",
+              "docType": null,
+              "met": true,
+              "metAt": "2024-12-05T11:30:00.000Z"
+            }
+          ]
+        }
+      ],
+      "financeViewers": {
+        "MA-2024-EXP-00001": [
+          "org7",
+          "org8"
+        ]
+      }
+    }
+  },
+  "geography": {
+    "countries": {
+      "Morocco": {
+        "iso": "504",
+        "coords": [
+          -7.0926,
+          31.7917
+        ],
+        "spread": 3.0
+      },
+      "Kenya": {
+        "iso": "404",
+        "coords": [
+          37.9062,
+          -0.0236
+        ],
+        "spread": 3.0
+      },
+      "Nigeria": {
+        "iso": "566",
+        "coords": [
+          8.6753,
+          9.082
+        ],
+        "spread": 3.5
+      },
+      "Netherlands": {
+        "iso": "528",
+        "coords": [
+          5.2913,
+          52.1326
+        ],
+        "spread": 1.5
+      }
+    },
+    "specialMappings": {},
+    "trustScoreLabel": "Verified African Exporter"
+  }
+}

@@ -1,0 +1,123 @@
+name: Corridor · Vietnam–US
+
+# ════════════════════════════════════════════════════════════════════════════
+# DEDICATED PER-CORRIDOR DEPLOY — one action, one purpose, no options.
+#
+# Two stages:
+#   1. build + push the webapp image to GHCR (immutable :<sha> tag + :latest).
+#   2. SSH to the host as the `deployer` user and trigger its FIXED deploy
+#      script, passing it the corridor name + the freshly-built image ref.
+#
+# HOST SECURITY MODEL (set by DevOps — DO NOT try to work around it).
+#   The `deployer` user is pinned to a forced command in authorized_keys:
+#   the ONLY thing an SSH session can run is the host's deploy script. Anything
+#   we put in `script:` below is NOT executed verbatim — it arrives on the host
+#   as $SSH_ORIGINAL_COMMAND, and the deploy script parses it as ARGUMENTS.
+#   So this workflow does NOT (and cannot) run npm / twin:reseed / docker
+#   compose directly. All of that lives inside the host deploy script.
+#
+# CONTRACT WITH THE HOST DEPLOY SCRIPT (deploy/deploy-template.sh in this repo,
+# installed as /home/deployer/deploy.sh on the host).
+#   It is invoked as:   deploy.sh <corridor> <image-ref> [wallet-passphrase]
+#     <corridor>          — switch-case selector (e.g. vietnam-us)
+#     <image-ref>         — the webapp image to roll to (ghcr.io/<repo>:<sha>)
+#     [wallet-passphrase] — the GitHub secret, delivered via $SSH_ORIGINAL_COMMAND
+#                           (env-only, not argv → not visible in `ps`)
+#   The deploy script, on the host, does the FULL fresh rebuild:
+#     • `npm run twin:reseed -- --yes` (reset → anchor → up → provision-orgs →
+#       seed) — node wallets are PRESERVED (no faucet), only DIDs/org wallets
+#       regenerate; internally runs `docker compose -f docker-compose.twin.yml up`,
+#     • rolls the webapp to <image-ref> via docker-compose.deploy.yml,
+#     • tees output to /home/deployer/logs/deploy-<corridor>-<ts>.log.
+#
+# Clone for another corridor: copy this file and change only `name`, the
+# `concurrency.group`, the `environment:` name, and `env.CORRIDOR` (the selector
+# handed to the host deploy script — must match a case branch in deploy.sh).
+#
+# Secrets:
+#   REPOSITORY: GITHUB_TOKEN (auto) — pushes the webapp image to GHCR.
+#   ENVIRONMENT (Settings → Environments → vietnam-us):
+#     SSH_HOST / SSH_USER / SSH_PRIVATE_KEY — the deploy host + `deployer` user.
+#       The private key MUST be WITHOUT a passphrase (the action passes none),
+#       and its public key must be the `deployer` key bound to the forced command.
+#     WALLET_PASSPHRASE — decrypts data/wallets.enc.json for anchor/provision;
+#       GitHub auto-masks it in the action log. MUST NOT contain whitespace
+#       (it is parsed as a single token from the SSH command line).
+# ════════════════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+
+# The host deploy script anchors/seeds on the IOTA testnet — never let two runs
+# race the same wallets / the same deployed instance.
+concurrency:
+  group: vietnam-us-corridor
+  cancel-in-progress: false
+
+env:
+  # Argument handed to the host deploy script to select the compose setup.
+  CORRIDOR: vietnam-us
+
+jobs:
+  # ── Stage 1 ── build the webapp image on the runner and push it to GHCR.
+  build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push webapp image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── Stage 2 ── trigger the host's FIXED deploy script (forced command).
+  deploy:
+    needs: build-push
+    runs-on: ubuntu-latest
+    # Per-corridor secret scope (SSH_*). Also the hook for environment
+    # protection rules (required reviewers).
+    environment: vietnam-us
+    steps:
+      - name: Guard — WALLET_PASSPHRASE present
+        run: |
+          if [ -z "${{ secrets.WALLET_PASSPHRASE }}" ]; then
+            echo "::error::WALLET_PASSPHRASE is not set in the vietnam-us environment — the host cannot decrypt data/wallets.enc.json for anchor/provision."
+            exit 1
+          fi
+
+      - name: Trigger host deploy script
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # The host reseeds two TWIN nodes on a slow testnet, then rolls the
+          # webapp — give the forced command room to finish.
+          command_timeout: 30m
+          # NOTE: with the forced command this is NOT run as a script. It is
+          # delivered to the host as $SSH_ORIGINAL_COMMAND and parsed by the
+          # deploy script as:  <corridor> <image-ref> <repo-ref> <wallet-passphrase>
+          # repo-ref = github.sha so the host checkout matches the built image.
+          # GitHub auto-masks the secret in the streamed log.
+          script: ${{ env.CORRIDOR }} ghcr.io/${{ github.repository }}:${{ github.sha }} ${{ github.sha }} ${{ secrets.WALLET_PASSPHRASE }}

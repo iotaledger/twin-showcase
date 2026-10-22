@@ -1,0 +1,245 @@
+# TWIN Nodes for the trade corridor demo - two independent nodes (Alpha + Beta),
+# each with its own MySQL instance, connected to the IOTA testnet.
+#
+# Two-phase deployment (per twin-node-quickstart.md):
+#
+#   1. Bootstrap once per node (creates DID on IOTA testnet, funds wallet):
+#        docker compose -f docker-compose.twin.yml run --rm twin-bootstrap-alpha
+#        docker compose -f docker-compose.twin.yml run --rm twin-bootstrap-beta
+#
+#   2. Start the runtime nodes:
+#        docker compose -f docker-compose.twin.yml up -d twin-node-alpha twin-node-beta
+#
+#   Health:  curl http://localhost:3000/health   (Alpha)
+#            curl http://localhost:3001/health   (Beta)
+#
+#   Full reset (wipes DIDs and DB):
+#        docker compose -f docker-compose.twin.yml down -v
+#
+# The bootstrap services are gated behind the "bootstrap" profile so a bare
+# `docker compose up` starts only the databases and runtime nodes.
+#
+# Security: every published port is bound to 127.0.0.1 — nothing in this
+# stack may listen on a public interface (a MySQL port with default
+# credentials on 0.0.0.0 is found and wiped by internet scanners within
+# days). On the deploy host only the reverse proxy terminates public traffic;
+# the webapp reaches the nodes over the docker network (container names), and
+# host-side scripts/debugging use localhost or an SSH tunnel
+# (ssh -L 3306:127.0.0.1:3306 <host>).
+#
+# MySQL credentials are overridable for production:
+#   TWIN_MYSQL_ROOT_PASSWORD (default: root)  TWIN_MYSQL_PASSWORD (default: twin)
+# Set them in a `.env` file next to this compose file (or export them) BEFORE
+# the first `up` — MySQL only honours them on first init of an empty datadir.
+
+name: twin-showcase
+
+services:
+  # ────────────────────────── Alpha ──────────────────────────
+  db-alpha:
+    image: mysql:8.4.7
+    container_name: twin-showcase-db-alpha
+    # T-4V03: per-container mem_limit removed — the host (≥16 GB) is the bound.
+    # Caps were starving the node late in a long seed (fetchHelper.general on
+    # the last documents); the seed also retries transient node errors now.
+    environment:
+      MYSQL_ROOT_PASSWORD: ${TWIN_MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: twin
+      MYSQL_PASSWORD: ${TWIN_MYSQL_PASSWORD:-twin}
+      MYSQL_DATABASE: twin
+    ports:
+      # T-438: loopback-only — MySQL must never be reachable off-host.
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mysql_data_alpha:/var/lib/mysql
+    healthcheck:
+      # TCP check on 3306 — NOT the unix socket. During MySQL's first-init the
+      # entrypoint runs a TEMPORARY socket-only server (port 0) then restarts.
+      # A `-h localhost` socket ping reports healthy DURING that temporary
+      # phase, so dependents (the TWIN node bootstrap) start while MySQL is
+      # mid-restart and fail with "Failed to bootstrap MySqlEntityStorageConnector".
+      # Only the real server listens on TCP 3306, so this stays unhealthy until
+      # MySQL is genuinely ready.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3306", "--protocol=TCP", "-uroot", "-p${TWIN_MYSQL_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    restart: unless-stopped
+
+  db-init-alpha:
+    # T-424: guarantee the `twin` database exists even when the data volume
+    # predates MYSQL_DATABASE (MySQL honours that env only on first init of an
+    # EMPTY datadir). One-shot, idempotent; runs after MySQL is healthy and
+    # before the node/bootstrap start. Docker-mode only; simulated mode has no
+    # MySQL and is unaffected.
+    image: mysql:8.4.7
+    depends_on:
+      db-alpha:
+        condition: service_healthy
+    command:
+      - sh
+      - -c
+      - >-
+        mysql -h db-alpha -P 3306 -uroot -p${TWIN_MYSQL_ROOT_PASSWORD:-root}
+        -e "CREATE DATABASE IF NOT EXISTS twin;
+        GRANT ALL PRIVILEGES ON twin.* TO 'twin'@'%';
+        FLUSH PRIVILEGES;"
+    restart: "no"
+
+  twin-bootstrap-alpha:
+    image: twinfoundation/twin-node:0.9.0
+    profiles: ["bootstrap"]
+    depends_on:
+      db-alpha:
+        condition: service_healthy
+      db-init-alpha:
+        condition: service_completed_successfully
+    env_file:
+      - twin/alpha/node.env
+    environment:
+      # T-438: same override as twin-node-alpha (env_file default: twin).
+      TWIN_MY_SQL_PASSWORD: ${TWIN_MYSQL_PASSWORD:-twin}
+    volumes:
+      - twin_data_alpha:/var/lib/twin
+      - ./twin/alpha/bootstrap.env:/app/.env.bootstrap:ro
+    command: ["node", "src/index.js", "bootstrap-legacy", "--load-env=.env.bootstrap"]
+
+  twin-node-alpha:
+    image: twinfoundation/twin-node:0.9.0
+    container_name: twin-showcase-node-alpha
+    # T-4V03: per-container mem_limit removed. The 3g→5g cap still starved the
+    # node late in a long seed (the last consignment's docs failed with
+    # fetchHelper.general). The host (≥16 GB) is now the only bound;
+    # `restart: unless-stopped` still recovers a genuine OOM.
+    depends_on:
+      db-alpha:
+        condition: service_healthy
+      db-init-alpha:
+        condition: service_completed_successfully
+    env_file:
+      - twin/alpha/node.env
+    # Runtime-only (NOT the bootstrap container, which shares node.env but
+    # doesn't mount the file): preload the JSON-LD context-cache seed.
+    environment:
+      NODE_OPTIONS: "--import /app/jsonld-fix.mjs"
+      # T-321/T-324: load the corridor DataspaceApp extension (advertise + inbound).
+      TWIN_EXTENSIONS: "/app/dataspace-app.mjs"
+      # T-438: keep the node's MySQL password in sync with db-alpha when
+      # TWIN_MYSQL_PASSWORD overrides the node.env default.
+      TWIN_MY_SQL_PASSWORD: ${TWIN_MYSQL_PASSWORD:-twin}
+    ports:
+      # T-438: loopback-only — host scripts use localhost; the webapp stack
+      # reaches the node by container name over the shared docker network.
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - twin_data_alpha:/var/lib/twin
+      # JSON-LD context cache seed (NODE_OPTIONS=--import in node.env) —
+      # restores verifiableStorageId in immutable-proof responses while
+      # schema.twindev.org serves 404. See twin/jsonld-fix.mjs.
+      - ./twin/jsonld-fix.mjs:/app/jsonld-fix.mjs:ro
+      - ./twin/dataspace-app.mjs:/app/dataspace-app.mjs:ro
+    restart: unless-stopped
+
+  # ────────────────────────── Beta ───────────────────────────
+  db-beta:
+    image: mysql:8.4.7
+    container_name: twin-showcase-db-beta
+    # T-4V03: per-container mem_limit removed — see db-alpha.
+    environment:
+      MYSQL_ROOT_PASSWORD: ${TWIN_MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: twin
+      MYSQL_PASSWORD: ${TWIN_MYSQL_PASSWORD:-twin}
+      MYSQL_DATABASE: twin
+    ports:
+      # T-438: loopback-only — MySQL must never be reachable off-host.
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - mysql_data_beta:/var/lib/mysql
+    healthcheck:
+      # TCP check on 3306 — NOT the unix socket. During MySQL's first-init the
+      # entrypoint runs a TEMPORARY socket-only server (port 0) then restarts.
+      # A `-h localhost` socket ping reports healthy DURING that temporary
+      # phase, so dependents (the TWIN node bootstrap) start while MySQL is
+      # mid-restart and fail with "Failed to bootstrap MySqlEntityStorageConnector".
+      # Only the real server listens on TCP 3306, so this stays unhealthy until
+      # MySQL is genuinely ready.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3306", "--protocol=TCP", "-uroot", "-p${TWIN_MYSQL_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    restart: unless-stopped
+
+  db-init-beta:
+    # T-424: guarantee the `twin` database exists even when the data volume
+    # predates MYSQL_DATABASE (MySQL honours that env only on first init of an
+    # EMPTY datadir). One-shot, idempotent; runs after MySQL is healthy and
+    # before the node/bootstrap start. Docker-mode only; simulated mode has no
+    # MySQL and is unaffected.
+    image: mysql:8.4.7
+    depends_on:
+      db-beta:
+        condition: service_healthy
+    command:
+      - sh
+      - -c
+      - >-
+        mysql -h db-beta -P 3306 -uroot -p${TWIN_MYSQL_ROOT_PASSWORD:-root}
+        -e "CREATE DATABASE IF NOT EXISTS twin;
+        GRANT ALL PRIVILEGES ON twin.* TO 'twin'@'%';
+        FLUSH PRIVILEGES;"
+    restart: "no"
+
+  twin-bootstrap-beta:
+    image: twinfoundation/twin-node:0.9.0
+    profiles: ["bootstrap"]
+    depends_on:
+      db-beta:
+        condition: service_healthy
+      db-init-beta:
+        condition: service_completed_successfully
+    env_file:
+      - twin/beta/node.env
+    environment:
+      # T-438: same override as twin-node-beta (env_file default: twin).
+      TWIN_MY_SQL_PASSWORD: ${TWIN_MYSQL_PASSWORD:-twin}
+    volumes:
+      - twin_data_beta:/var/lib/twin
+      - ./twin/beta/bootstrap.env:/app/.env.bootstrap:ro
+    command: ["node", "src/index.js", "bootstrap-legacy", "--load-env=.env.bootstrap"]
+
+  twin-node-beta:
+    image: twinfoundation/twin-node:0.9.0
+    container_name: twin-showcase-node-beta
+    # T-4V03: per-container mem_limit removed — see twin-node-alpha.
+    depends_on:
+      db-beta:
+        condition: service_healthy
+      db-init-beta:
+        condition: service_completed_successfully
+    env_file:
+      - twin/beta/node.env
+    # Runtime-only preload of the JSON-LD context-cache seed (see alpha).
+    environment:
+      NODE_OPTIONS: "--import /app/jsonld-fix.mjs"
+      # T-321/T-324: load the corridor DataspaceApp extension (advertise + inbound).
+      TWIN_EXTENSIONS: "/app/dataspace-app.mjs"
+      # T-438: keep the node's MySQL password in sync with db-beta when
+      # TWIN_MYSQL_PASSWORD overrides the node.env default.
+      TWIN_MY_SQL_PASSWORD: ${TWIN_MYSQL_PASSWORD:-twin}
+    ports:
+      # T-438: loopback-only — see twin-node-alpha.
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - twin_data_beta:/var/lib/twin
+      # JSON-LD context cache seed — see twin-node-alpha / twin/jsonld-fix.mjs.
+      - ./twin/jsonld-fix.mjs:/app/jsonld-fix.mjs:ro
+      - ./twin/dataspace-app.mjs:/app/dataspace-app.mjs:ro
+    restart: unless-stopped
+
+volumes:
+  mysql_data_alpha:
+  mysql_data_beta:
+  twin_data_alpha:
+  twin_data_beta:

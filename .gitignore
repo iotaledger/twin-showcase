@@ -1,0 +1,18 @@
+node_modules/
+client/dist/
+server/public/
+server/twin/dist/
+.DS_Store
+*.log
+.env
+.env.*
+# Keep the documented env-var reference tracked
+!.env.example
+# Runtime secrets and state written by the twin:* scripts and the seeder:
+# the encrypted wallet bundle (wallets.enc.json) and its address list, the
+# wallet lock file, tenant-state.json (tenant API keys, org passwords in clear
+# text) and seed-state.json. Nothing under data/ is ever committed. Anchored to
+# the repo root so that client/src/data/ stays tracked.
+/data/
+# Local Claude Code configuration (agents, settings, notes): never committed
+/.claude/

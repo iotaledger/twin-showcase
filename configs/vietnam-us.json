@@ -1,0 +1,1046 @@
+{
+  "corridor": {
+    "id": "vietnam-us",
+    "name": "Vietnam Export Corridor",
+    "description": "Vietnam garment and footwear exports to US, EU, and Japan markets",
+    "version": "1.0.0"
+  },
+  "branding": {
+    "appName": "TWIN Vietnam",
+    "tagline": "Trade & Logistics Platform",
+    "logo": "/vietnam.png",
+    "alpha": {
+      "label": "Alpha",
+      "description": "Vietnam Export Corridor"
+    },
+    "beta": {
+      "label": "Beta",
+      "description": "Importers / Destination Markets"
+    }
+  },
+  "theme": {
+    "accent": "#FF7200",
+    "accentLight": "#fff4eb",
+    "navBg": "#FF7200",
+    "navHover": "#fff4eb",
+    "navActive": "#FF7200",
+    "amber": "#FF7200"
+  },
+  "nodes": {
+    "alpha": {
+      "orgs": [
+        {
+          "id": "org1",
+          "name": "Lotus Bay Apparel JSC",
+          "role": "Manufacturer - Vietnam",
+          "username": "lotusbay",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org2",
+          "name": "Export Customs Office (Vietnam)",
+          "role": "Customs Authority - Vietnam",
+          "username": "vncustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Export Customs Office (Vietnam)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org3",
+          "name": "Certificate of Origin Office (Vietnam)",
+          "role": "Certificate of Origin Authority - Vietnam",
+          "username": "vncoo",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Trade Ministry (Vietnam)",
+          "governmentSystem": "National eCO system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org4",
+          "name": "Hanbit Fibers Co., Ltd",
+          "role": "Input Supplier - South Korea",
+          "username": "hanbit",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org7",
+          "name": "Mekong Commercial Bank",
+          "role": "Financier - Vietnam",
+          "username": "financier1",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org8",
+          "name": "Meridian Trade Bank Vietnam",
+          "role": "Financier - International",
+          "username": "financier2",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org9",
+          "name": "Clearview Inspection Services Vietnam",
+          "role": "Quality Inspector - Vietnam",
+          "username": "clearview",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org10",
+          "name": "Port Authority (Ho Chi Minh City)",
+          "role": "Port Authority - Ho Chi Minh City",
+          "username": "hcmcport",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Maritime Administration (Vietnam)",
+          "governmentSystem": "Port community system",
+          "digitalSignatureCapability": false
+        },
+        {
+          "id": "org11",
+          "name": "Jadeway Logistics",
+          "role": "Freight Forwarder - Vietnam",
+          "username": "jadeway",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org12",
+          "name": "Bluewave Container Line Vietnam",
+          "role": "Carrier - Vietnam",
+          "username": "bluewave",
+          "password": "demo",
+          "orgType": "private"
+        }
+      ]
+    },
+    "beta": {
+      "orgs": [
+        {
+          "id": "org5",
+          "name": "Northpeak Athletics Inc.",
+          "role": "Importing Buyer - United States",
+          "username": "northpeak",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org6",
+          "name": "Northpeak Athletics Europe B.V.",
+          "role": "Importing Buyer - EU",
+          "username": "northpeakeu",
+          "password": "demo",
+          "orgType": "private"
+        },
+        {
+          "id": "org13",
+          "name": "Import Customs Office (United States)",
+          "role": "Customs Authority - United States",
+          "username": "uscustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "Import Customs Office (United States)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        },
+        {
+          "id": "org14",
+          "name": "EU Import Customs Office (Netherlands)",
+          "role": "Customs Authority - EU",
+          "username": "eucustoms",
+          "password": "demo",
+          "orgType": "public",
+          "regulatoryAuthority": "EU Import Customs Office (Netherlands)",
+          "governmentSystem": "National customs declaration system",
+          "digitalSignatureCapability": true
+        }
+      ]
+    }
+  },
+  "credentials": {
+    "blacklisted": [
+      "MST-000000",
+      "BRN-000000",
+      "TIN-000000",
+      "KBN-000000",
+      "EIN-000000"
+    ],
+    "expired": [
+      "MST-111111",
+      "BRN-111111"
+    ],
+    "suspended": [
+      "MST-222222",
+      "BRN-222222"
+    ],
+    "registrationTypes": {
+      "MST": "Vietnam Tax Code (Ma So Thue)",
+      "BRN": "Business Registration Number",
+      "TIN": "Tax Identification Number",
+      "LEI": "Legal Entity Identifier",
+      "KBN": "Korean Business Number",
+      "EIN": "US Employer Identification Number",
+      "EORI": "EU Economic Operator ID",
+      "DUNS": "DUNS Number"
+    },
+    "attestationAuthorities": [
+      {
+        "roleMatch": "Vietnam",
+        "authority": "Export Customs Office (Vietnam)"
+      },
+      {
+        "roleMatch": "South Korea",
+        "authority": "Customs Office (South Korea)"
+      },
+      {
+        "roleMatch": "United States",
+        "authority": "Import Customs Office (United States)"
+      },
+      {
+        "roleMatch": "EU",
+        "authority": "EU Import Customs Office"
+      }
+    ],
+    "defaultAuthority": "National Business Registry",
+    "testCredentials": {
+      "pass": [
+        {
+          "code": "MST-123456",
+          "description": "Vietnam Tax Code (Ma So Thue)"
+        },
+        {
+          "code": "KBN-254789",
+          "description": "Korean Business Number"
+        },
+        {
+          "code": "EIN-123456",
+          "description": "US Employer Identification Number"
+        },
+        {
+          "code": "EORI-123456",
+          "description": "EU Economic Operator ID (EORI)"
+        }
+      ],
+      "fail": [
+        {
+          "code": "MST-000000",
+          "description": "Denied - blacklisted"
+        },
+        {
+          "code": "MST-111111",
+          "description": "Expired licence"
+        },
+        {
+          "code": "MST-222222",
+          "description": "Suspended - under review"
+        },
+        {
+          "code": "X-anything",
+          "description": "Invalid prefix"
+        }
+      ]
+    }
+  },
+  "consignments": {
+    "alpha": [
+      {
+        "ucr": "VN-2026-EXP-00101",
+        "product": "Men's Cotton Polo Shirts (Knitted)",
+        "hsCode": "6105.10",
+        "quantity": "24,000 pcs",
+        "totalValue": 168000,
+        "currency": "USD",
+        "exporter": "Lotus Bay Apparel JSC",
+        "importer": "Northpeak Athletics Inc.",
+        "fromCountry": "Vietnam",
+        "toCountry": "United States",
+        "originPort": "Port of Ho Chi Minh City",
+        "destinationPort": "Port of Los Angeles",
+        "vessel": "MV Bluewave Seletar",
+        "shipDate": "2026-03-10",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-LBA-0101",
+        "declRef": "VN-EXP-2026-0101",
+        "status": "Delivered",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Lotus Bay Apparel JSC",
+        "originComposition": {
+          "localContentPercent": 65.5,
+          "calculationMethod": "RVC",
+          "threshold": 55,
+          "cptppCumulationApplied": true,
+          "inputMaterials": [
+            {
+              "material": "Fabric",
+              "supplierCountry": "KR",
+              "valuePercent": 30.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "VN",
+              "valuePercent": 15.5,
+              "ftaMember": true
+            },
+            {
+              "material": "Zippers",
+              "supplierCountry": "VN",
+              "valuePercent": 10.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "VN",
+              "valuePercent": 40.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Elastic",
+              "supplierCountry": "CN",
+              "valuePercent": 4.5,
+              "ftaMember": false
+            }
+          ]
+        }
+      },
+      {
+        "ucr": "VN-2026-EXP-00102",
+        "product": "Women's Cotton T-Shirts (Knitted)",
+        "hsCode": "6109.10",
+        "quantity": "36,000 pcs",
+        "totalValue": 216000,
+        "currency": "USD",
+        "exporter": "Lotus Bay Apparel JSC",
+        "importer": "Northpeak Athletics Inc.",
+        "fromCountry": "Vietnam",
+        "toCountry": "United States",
+        "originPort": "Port of Ho Chi Minh City",
+        "destinationPort": "Port of Los Angeles",
+        "vessel": "MV Bluewave Sentosa",
+        "shipDate": "2026-03-18",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-LBA-0102",
+        "declRef": "VN-EXP-2026-0102",
+        "status": "In Transit",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Lotus Bay Apparel JSC",
+        "originComposition": {
+          "localContentPercent": 68.0,
+          "calculationMethod": "RVC",
+          "threshold": 55,
+          "cptppCumulationApplied": true,
+          "inputMaterials": [
+            {
+              "material": "Cotton Fabric",
+              "supplierCountry": "VN",
+              "valuePercent": 28.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "VN",
+              "valuePercent": 12.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labels & Tags",
+              "supplierCountry": "KR",
+              "valuePercent": 5.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "VN",
+              "valuePercent": 45.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Packaging",
+              "supplierCountry": "CN",
+              "valuePercent": 10.0,
+              "ftaMember": false
+            }
+          ]
+        }
+      },
+      {
+        "ucr": "VN-2026-EXP-E001",
+        "product": "Men's Cotton Dress Shirts (Woven)",
+        "hsCode": "6205.20",
+        "quantity": "15,000 pcs",
+        "totalValue": 225000,
+        "currency": "USD",
+        "exporter": "Lotus Bay Apparel JSC",
+        "importer": "Northpeak Athletics Inc.",
+        "fromCountry": "Vietnam",
+        "toCountry": "United States",
+        "originPort": "Port of Ho Chi Minh City",
+        "destinationPort": "Port of Los Angeles",
+        "vessel": "MV Bluewave Sentosa",
+        "shipDate": "2026-02-20",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-LBA-E001",
+        "declRef": "VN-EXP-2026-E001",
+        "status": "Under Review",
+        "creatorOrgId": "org1",
+        "creatorOrgName": "Lotus Bay Apparel JSC",
+        "errorType": "HS Code Mismatch",
+        "errorDescription": "Export Declaration filed under HS 6205.30 (man-made fibres) but Commercial Invoice declares HS 6205.20 (cotton). Export customs has flagged the shipment for reconciliation.",
+        "originComposition": {
+          "localContentPercent": 63.0,
+          "calculationMethod": "RVC",
+          "threshold": 55,
+          "cptppCumulationApplied": true,
+          "inputMaterials": [
+            {
+              "material": "Cotton Fabric",
+              "supplierCountry": "VN",
+              "valuePercent": 25.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Buttons & Collar Stays",
+              "supplierCountry": "KR",
+              "valuePercent": 7.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Thread",
+              "supplierCountry": "VN",
+              "valuePercent": 8.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Labor",
+              "supplierCountry": "VN",
+              "valuePercent": 48.0,
+              "ftaMember": true
+            },
+            {
+              "material": "Interfacing",
+              "supplierCountry": "CN",
+              "valuePercent": 12.0,
+              "ftaMember": false
+            }
+          ]
+        }
+      }
+    ],
+    "beta": [
+      {
+        "ucr": "KR-2026-EXP-00201",
+        "product": "Spandex Yarn (40D/70D)",
+        "hsCode": "5402.44",
+        "quantity": "45,000 kg",
+        "totalValue": 135000,
+        "currency": "USD",
+        "exporter": "Hanbit Fibers Co., Ltd",
+        "importer": "Lotus Bay Apparel JSC",
+        "fromCountry": "South Korea",
+        "toCountry": "Vietnam",
+        "originPort": "Port of Busan",
+        "destinationPort": "Port of Ho Chi Minh City",
+        "vessel": "MV Hanbada Promise",
+        "shipDate": "2026-01-20",
+        "incoterms": "CIF",
+        "invoiceRef": "INV-2026-HBF-0201",
+        "declRef": "KR-EXP-2026-0201",
+        "status": "Delivered",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "Northpeak Athletics Inc."
+      },
+      {
+        "ucr": "KR-2026-EXP-00202",
+        "product": "Nylon Woven Fabric (Ripstop, Dyed)",
+        "hsCode": "5407.42",
+        "quantity": "32,000 kg",
+        "totalValue": 192000,
+        "currency": "USD",
+        "exporter": "Hanbit Fibers Co., Ltd",
+        "importer": "Lotus Bay Apparel JSC",
+        "fromCountry": "South Korea",
+        "toCountry": "Vietnam",
+        "originPort": "Port of Busan",
+        "destinationPort": "Port of Hai Phong",
+        "vessel": "MV Hanbada Algeciras",
+        "shipDate": "2026-02-15",
+        "incoterms": "FOB",
+        "invoiceRef": "INV-2026-HBF-0202",
+        "declRef": "KR-EXP-2026-0202",
+        "status": "In Transit",
+        "creatorOrgId": "org5",
+        "creatorOrgName": "Northpeak Athletics Inc."
+      }
+    ]
+  },
+  "documents": {
+    "alpha": [
+      {
+        "name": "Export Certificate of Origin",
+        "docType": "Export Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Certificate of Origin Office (Vietnam)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Export Customs Office (Vietnam)",
+        "suffix": "ED"
+      },
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": null,
+        "issuerName": "Jadeway Logistics",
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Bluewave Container Line Vietnam",
+        "suffix": "BL"
+      }
+    ],
+    "beta": [
+      {
+        "name": "Commercial Invoice",
+        "docType": "Commercial Invoice",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "INV"
+      },
+      {
+        "name": "Packing List",
+        "docType": "Packing List",
+        "issuerOrgId": "creator",
+        "issuerName": null,
+        "suffix": "PL"
+      },
+      {
+        "name": "Bill of Lading",
+        "docType": "Bill of Lading",
+        "issuerOrgId": null,
+        "issuerName": "Hanbada Marine Co., Ltd",
+        "suffix": "BL"
+      },
+      {
+        "name": "Certificate of Origin",
+        "docType": "Certificate of Origin",
+        "issuerOrgId": null,
+        "issuerName": "Customs Office (South Korea)",
+        "suffix": "CO"
+      },
+      {
+        "name": "Export Declaration",
+        "docType": "Export Declaration",
+        "issuerOrgId": null,
+        "issuerName": "Customs Office (South Korea)",
+        "suffix": "ED"
+      }
+    ]
+  },
+  "documentTemplates": {
+    "addressBook": {
+      "Vietnam": "Lot 12, Lotus Bay Industrial Park, Thai Nguyen, Vietnam",
+      "South Korea": "88 Hanbit-ro, Mapo-gu, Seoul, South Korea",
+      "United States": "100 Summit Way, Portland, OR 97209, USA",
+      "Netherlands": "Havenstraat 21, 3011 AB Rotterdam, Netherlands",
+      "Germany": "Lindenhofstrasse 12, 10969 Berlin, Germany",
+      "Japan": "2-8 Sakura-dori, Chuo-ku, Tokyo, Japan"
+    },
+    "defaultCarrier": "Bluewave Container Line",
+    "pdfTemplates": {
+      "Commercial Invoice (Inputs)": {
+        "lines": [
+          "COMMERCIAL INVOICE (INPUTS)",
+          "Invoice Ref: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Supplier: ${exporter}",
+          "Buyer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Origin: ${fromCountry}",
+          "Destination: ${toCountry}",
+          "",
+          "This invoice covers raw materials and intermediate inputs",
+          "supplied for garment/footwear manufacturing under contract.",
+          "",
+          "Issued by: ${issuer}"
+        ]
+      },
+      "Input Certificate of Origin": {
+        "lines": [
+          "INPUT CERTIFICATE OF ORIGIN",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Origin: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This certifies that the goods described herein originate",
+          "in ${fromCountry} in accordance with applicable rules of origin.",
+          "",
+          "Issued by: Customs Office (South Korea)"
+        ]
+      },
+      "Export Certificate of Origin": {
+        "lines": [
+          "CERTIFICATE OF ORIGIN",
+          "Certificate of Origin Office (Vietnam)",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Origin: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This certificate is issued through the electronic",
+          "Certificate of Origin system operated by the national",
+          "certificate of origin office of Vietnam.",
+          "",
+          "Origin criterion: Regional Value Content (RVC)",
+          "Applicable FTA: CPTPP / EVFTA",
+          "",
+          "Issued by: Certificate of Origin Office (Vietnam)"
+        ]
+      },
+      "Bill of Material": {
+        "lines": [
+          "BILL OF MATERIAL",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Manufacturer: ${exporter}",
+          "Buyer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Origin Composition:",
+          "  Local content (Vietnam): 65.5%",
+          "  CPTPP cumulation (South Korea): 30.0%",
+          "  Third-country content (China): 4.5%",
+          "",
+          "Input Materials:",
+          "  - Fabric (South Korea): 30.0%",
+          "  - Thread (Vietnam): 15.5%",
+          "  - Zippers (Vietnam): 10.0%",
+          "  - Labor (Vietnam): 40.0%",
+          "  - Elastic (China): 4.5%",
+          "",
+          "CPTPP cumulation applied: Yes",
+          "",
+          "Issued by: ${issuer}"
+        ]
+      },
+      "Inspection Report": {
+        "lines": [
+          "INSPECTION REPORT",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Exporter: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Origin: ${fromCountry}",
+          "Destination: ${toCountry}",
+          "",
+          "This inspection report certifies that the goods have been",
+          "inspected and conform to the quality standards and specifications",
+          "required by the buyer and applicable regulations.",
+          "",
+          "Issued by: Clearview Inspection Services Vietnam"
+        ]
+      },
+      "Export Declaration": {
+        "lines": [
+          "EXPORT DECLARATION",
+          "National customs declaration system (Vietnam)",
+          "Reference: ${ref}",
+          "Date: ${shipDate}",
+          "",
+          "Declarant: ${exporter}",
+          "Importer: ${importer}",
+          "Consignment: ${ucr}",
+          "",
+          "Country of Export: ${fromCountry}",
+          "Country of Destination: ${toCountry}",
+          "",
+          "This declaration has been filed and processed through the",
+          "national customs clearance system.",
+          "",
+          "Issued by: Export Customs Office (Vietnam)"
+        ]
+      }
+    },
+    "xmlTemplates": {
+      "Bill of Material": {
+        "originComposition": {
+          "localContentPercent": 65.5,
+          "cptppCumulationApplied": true,
+          "thirdCountryContentPercent": 4.5,
+          "inputMaterials": [
+            {
+              "material": "Fabric",
+              "origin": "KR",
+              "percent": 30.0
+            },
+            {
+              "material": "Thread",
+              "origin": "VN",
+              "percent": 15.5
+            },
+            {
+              "material": "Zippers",
+              "origin": "VN",
+              "percent": 10.0
+            },
+            {
+              "material": "Labor",
+              "origin": "VN",
+              "percent": 40.0
+            },
+            {
+              "material": "Elastic",
+              "origin": "CN",
+              "percent": 4.5
+            }
+          ]
+        }
+      },
+      "Export Certificate of Origin": {
+        "formType": "EUR.1",
+        "issuingAuthority": "Certificate of Origin Office (Vietnam)",
+        "issuingSystem": "National eCO system",
+        "originCriterion": "RVC",
+        "cumulationPartnerCountry": "KR",
+        "cumulationMaterialType": "Fabric and yarn"
+      },
+      "Export Declaration": {
+        "declarantName": "Export Customs Office (Vietnam)",
+        "customsSystem": "National customs declaration system"
+      }
+    }
+  },
+  "finance": {
+    "currencies": [
+      "USD",
+      "EUR",
+      "VND"
+    ],
+    "paymentMethods": [
+      "Bank Transfer",
+      "Letter of Credit",
+      "Open Account",
+      "Cash Against Documents"
+    ],
+    "seedData": {
+      "payments": [
+        {
+          "consignmentUcr": "VN-2026-EXP-00101",
+          "invoiceRef": "INV-2026-LBA-0101",
+          "amount": 168000,
+          "currency": "USD",
+          "dueDate": "2026-05-31",
+          "status": "Partially Paid",
+          "paidAmount": 67200,
+          "paymentMethod": "Letter of Credit",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "notes": "First instalment (40%) received via LC. Balance due on B/L presentation and US customs clearance.",
+          "createdAt": "2026-03-10T09:00:00.000Z"
+        }
+      ],
+      "letterOfCredits": [
+        {
+          "consignmentUcr": "VN-2026-EXP-00101",
+          "lcNumber": "LC-2026-MEK-0101",
+          "issuingBank": "Meridian Trade Bank Vietnam",
+          "advisingBank": "Mekong Commercial Bank",
+          "beneficiary": "Lotus Bay Apparel JSC",
+          "applicant": "Northpeak Athletics Inc.",
+          "amount": 168000,
+          "currency": "USD",
+          "expiryDate": "2026-08-31",
+          "status": "Confirmed",
+          "creatorOrgId": "org1",
+          "createdAt": "2026-03-10T09:00:00.000Z"
+        }
+      ],
+      "smartContracts": [
+        {
+          "consignmentUcr": "VN-2026-EXP-00101",
+          "contractRef": "SC-2026-VN-0101",
+          "payorOrgId": "org5",
+          "payeeOrgId": "org1",
+          "amount": 168000,
+          "currency": "USD",
+          "status": "Active",
+          "autoRelease": true,
+          "createdAt": "2026-03-10T09:00:00.000Z",
+          "conditions": [
+            {
+              "description": "Export Certificate of Origin (EUR.1/CPTPP) issued and verified",
+              "docType": "Export Certificate of Origin",
+              "met": true,
+              "metAt": "2026-03-12T08:00:00.000Z"
+            },
+            {
+              "description": "Origin composition verified (Vietnam content >= 55%)",
+              "docType": "Bill of Material",
+              "met": true,
+              "metAt": "2026-03-12T09:15:00.000Z"
+            },
+            {
+              "description": "Bill of Lading (eBL) verified and presented",
+              "docType": "Bill of Lading",
+              "met": false,
+              "metAt": null
+            },
+            {
+              "description": "US import customs pre-clearance (no UFLPA hold)",
+              "docType": null,
+              "met": false,
+              "metAt": null
+            }
+          ]
+        }
+      ],
+      "financeViewers": {
+        "VN-2026-EXP-00101": [
+          "org7",
+          "org8"
+        ]
+      }
+    }
+  },
+  "geography": {
+    "countries": {
+      "Vietnam": {
+        "iso": "704",
+        "coords": [
+          108.2772,
+          14.0583
+        ],
+        "spread": 3.5
+      },
+      "United States": {
+        "iso": "840",
+        "coords": [
+          -95.7129,
+          37.0902
+        ],
+        "spread": 12.0
+      },
+      "South Korea": {
+        "iso": "410",
+        "coords": [
+          127.7669,
+          35.9078
+        ],
+        "spread": 2.0
+      },
+      "Netherlands": {
+        "iso": "528",
+        "coords": [
+          5.2913,
+          52.1326
+        ],
+        "spread": 1.5
+      },
+      "Germany": {
+        "iso": "276",
+        "coords": [
+          10.4515,
+          51.1657
+        ],
+        "spread": 3.2
+      },
+      "Japan": {
+        "iso": "392",
+        "coords": [
+          139.6917,
+          35.6895
+        ],
+        "spread": 2.5
+      },
+      "China": {
+        "iso": "156",
+        "coords": [
+          104.1954,
+          35.8617
+        ],
+        "spread": 12.0
+      },
+      "United Kingdom": {
+        "iso": "826",
+        "coords": [
+          -3.436,
+          55.3781
+        ],
+        "spread": 3.0
+      }
+    },
+    "specialMappings": {
+      "Ho Chi Minh City": "Vietnam",
+      "International": null,
+      "EU": "Netherlands"
+    },
+    "trustScoreLabel": "Verified Vietnamese Exporter"
+  },
+  "documentTypes": {
+    "Commercial Invoice": {
+      "uneceCode": "380",
+      "dataClassification": "sourceOfTruth",
+      "sourceSystem": null,
+      "issuingAuthority": null,
+      "requiresNotarization": true,
+      "publicAccess": "verify"
+    },
+    "Bill of Material": {
+      "uneceCode": "420",
+      "dataClassification": "immutableSnapshot",
+      "sourceSystem": null,
+      "issuingAuthority": null,
+      "requiresNotarization": true,
+      "publicAccess": "verify"
+    },
+    "Export Certificate of Origin": {
+      "uneceCode": "861",
+      "dataClassification": "sourceOfTruth",
+      "sourceSystem": null,
+      "issuingAuthority": "Certificate of Origin Office (Vietnam)",
+      "requiresNotarization": true,
+      "publicAccess": "content"
+    },
+    "Export Declaration": {
+      "uneceCode": "315",
+      "dataClassification": "sourceOfTruth",
+      "sourceSystem": null,
+      "issuingAuthority": "Export Customs Office (Vietnam)",
+      "requiresNotarization": true,
+      "publicAccess": "content"
+    },
+    "Bill of Lading": {
+      "uneceCode": "714",
+      "dataClassification": "immutableSnapshot",
+      "sourceSystem": null,
+      "issuingAuthority": null,
+      "requiresNotarization": true,
+      "publicAccess": "content"
+    },
+    "Inspection Report": {
+      "uneceCode": "856",
+      "dataClassification": "immutableSnapshot",
+      "sourceSystem": null,
+      "issuingAuthority": "Clearview Inspection Services Vietnam",
+      "requiresNotarization": false,
+      "publicAccess": "content"
+    },
+    "Packing List": {
+      "uneceCode": "271",
+      "dataClassification": "immutableSnapshot",
+      "sourceSystem": null,
+      "issuingAuthority": null,
+      "requiresNotarization": false,
+      "publicAccess": "content"
+    }
+  },
+  "regulations": [
+    {
+      "id": "cptpp",
+      "name": "Comprehensive and Progressive Agreement for Trans-Pacific Partnership",
+      "displayLabel": "CPTPP",
+      "applicableToDestinations": [
+        "United States",
+        "Japan"
+      ],
+      "complianceFieldMapping": {
+        "Origin Content": "consignment.originComposition.localContentPercent",
+        "Cumulation Applied": "consignment.originComposition.cptppCumulationApplied",
+        "Calculation Method": "consignment.originComposition.calculationMethod"
+      }
+    },
+    {
+      "id": "evfta",
+      "name": "EU-Vietnam Free Trade Agreement",
+      "displayLabel": "EVFTA",
+      "applicableToDestinations": [
+        "Netherlands",
+        "Germany"
+      ],
+      "complianceFieldMapping": {
+        "Origin Content": "consignment.originComposition.localContentPercent",
+        "Certificate of Origin": "documents.Export Certificate of Origin"
+      }
+    },
+    {
+      "id": "uflpa",
+      "name": "Uyghur Forced Labor Prevention Act",
+      "displayLabel": "UFLPA",
+      "applicableToDestinations": [
+        "United States"
+      ],
+      "complianceFieldMapping": {
+        "Supply Chain Attestation": "consignment.originComposition.inputMaterials",
+        "Forced Labor Screening": "consignment.originComposition.inputMaterials"
+      }
+    }
+  ],
+  "channels": [
+    {
+      "id": "A",
+      "label": "Government single window",
+      "description": "Official customs declarations, C/O applications and regulatory filings processed through the national and regional single window systems",
+      "documentTypes": [
+        "Export Declaration",
+        "Export Certificate of Origin"
+      ],
+      "systems": [
+        "National customs declaration system",
+        "National eCO system",
+        "National single window",
+        "Regional single window"
+      ]
+    },
+    {
+      "id": "B",
+      "label": "TWIN Network",
+      "description": "Commercial trade documents, notarized copies, supply chain data, and cross-border verification exchanged peer-to-peer via TWIN nodes",
+      "documentTypes": [
+        "Commercial Invoice",
+        "Bill of Material",
+        "Inspection Report",
+        "Packing List",
+        "Bill of Lading"
+      ],
+      "systems": [
+        "TWIN Node",
+        "IOTA Ledger"
+      ]
+    }
+  ]
+}

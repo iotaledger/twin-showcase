@@ -1,0 +1,102 @@
+# Webapp deploy stack — runs the demo SPA/servers from the PREBUILT GHCR image
+# (it builds nothing locally). Used on the deploy host by the deploy
+# script (deploy/deploy-template.sh, installed as /home/deployer/deploy.sh) after
+# the TWIN nodes are up.
+#
+#   WEBAPP_IMAGE=ghcr.io/<owner>/<repo>:<sha> \
+#   CONFIG_FILE=configs/vietnam-us.json \
+#   docker compose -f docker-compose.deploy.yml -p <corridor>-webapp up -d --pull always
+#
+# The TWIN nodes run in the separate `twin-showcase` compose project (see
+# docker-compose.twin.yml, started by `npm run twin:reseed`). This stack joins
+# that project's network so the webapp can reach the nodes by container name,
+# and points the docker adapter at them via TWIN_ALPHA_URL / TWIN_BETA_URL
+# (both nodes listen on 3000 INSIDE the network; host ports 3000/3001 are
+# irrelevant here).
+
+services:
+  twin-alpha:
+    image: ${WEBAPP_IMAGE:?set WEBAPP_IMAGE to the ghcr image ref}
+    container_name: ${COMPOSE_PROJECT_NAME:-webapp}-alpha
+    pull_policy: always
+    environment:
+      - PORT=4000
+      - NODE_ID=alpha
+      - NODE_NAME=Node Alpha
+      - PEER_URL=ws://twin-beta:4000
+      - CONFIG_FILE=${CONFIG_FILE:-configs/vietnam-us.json}
+      - ADAPTER_MODE=docker
+      - TWIN_ALPHA_URL=http://twin-showcase-node-alpha:3000
+      - TWIN_BETA_URL=http://twin-showcase-node-beta:3000
+      # Absolute base for the QR /verify links (T-4V03). Empty = localhost
+      # fallback; the customs corridor REQUIRES it (deploy script sets it).
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-}
+    volumes:
+      # The webapp image is built BEFORE the corridor is seeded, so it lacks
+      # data/tenant-state.json (the per-node x-api-key + org DIDs written by
+      # provision-orgs/seed). Mount the host's seeded data read-only so the
+      # docker adapter can authenticate to the nodes — without it every node
+      # read 401s (missingApiKeyOrTenantToken) and the UI shows nothing.
+      - ./data:/app/data:ro
+    networks: [default, twin]
+    restart: unless-stopped
+
+  twin-beta:
+    image: ${WEBAPP_IMAGE:?set WEBAPP_IMAGE to the ghcr image ref}
+    container_name: ${COMPOSE_PROJECT_NAME:-webapp}-beta
+    pull_policy: always
+    environment:
+      - PORT=4000
+      - NODE_ID=beta
+      - NODE_NAME=Node Beta
+      - PEER_URL=ws://twin-alpha:4000
+      - CONFIG_FILE=${CONFIG_FILE:-configs/vietnam-us.json}
+      - ADAPTER_MODE=docker
+      - TWIN_ALPHA_URL=http://twin-showcase-node-alpha:3000
+      - TWIN_BETA_URL=http://twin-showcase-node-beta:3000
+      # See twin-alpha — QR /verify links need the public host.
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-}
+    volumes:
+      # See twin-alpha: mount the host's seeded data (tenant-state.json) so the
+      # docker adapter can authenticate to the nodes.
+      - ./data:/app/data:ro
+    networks: [default, twin]
+    restart: unless-stopped
+
+  twin-proxy:
+    image: ${WEBAPP_IMAGE:?set WEBAPP_IMAGE to the ghcr image ref}
+    container_name: ${COMPOSE_PROJECT_NAME:-webapp}-proxy
+    pull_policy: always
+    command: ["node", "server/proxy.js"]
+    environment:
+      - PROXY_PORT=4002
+      - ALPHA_HOST=twin-alpha
+      - ALPHA_PORT=4000
+      - BETA_HOST=twin-beta
+      - BETA_PORT=4000
+    ports:
+      # Loopback-only — the reverse proxy reaches the proxy by container name
+      # over the `web` network; the host mapping exists only for on-host
+      # debugging (curl localhost:4002). Never publish on 0.0.0.0.
+      - "127.0.0.1:4002:4002"
+    depends_on:
+      - twin-alpha
+      - twin-beta
+    # `web` = Traefik's external network, so Traefik can reach this proxy by
+    # container name (vietnam-us-webapp-proxy:4002). `default` keeps it talking
+    # to twin-alpha/twin-beta within this compose project.
+    networks: [default, web]
+    restart: unless-stopped
+
+networks:
+  # The TWIN-node compose project's network (docker-compose.twin.yml has
+  # `name: twin-showcase`, so its default network is `twin-showcase_default`).
+  # External: it must already exist — `npm run twin:reseed` brings it up first.
+  twin:
+    external: true
+    name: twin-showcase_default
+  # Traefik's shared network. External: it must already exist (created by the
+  # Traefik stack). Only the public-facing proxy joins it.
+  web:
+    external: true
+    name: web
